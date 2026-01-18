@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Settings, Zap, CheckCircle, Activity, Box, Factory, 
   MapPin, Phone, Mail, ChevronDown, Cpu, RefreshCw, 
@@ -10,7 +10,7 @@ import {
 /**
  * 重要：請在此處填入您在 Google Apps Script 部署後取得的 Web App URL
  */
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwiYdDfk9YwjeauV1iuPXTs4i4sMC5GkR0HtbsORUAhWmo86BOQo6O8wtus5aiMVDWc/exec";
+const SCRIPT_URL = "您的_GAS_WEB_APP_URL";
 
 // --- 十大產品數據定義 ---
 const productData = {
@@ -19,6 +19,8 @@ const productData = {
       id: "fifo",
       title: "先進先出 (FIFO) 射出成型機",
       model: "TGD 系列",
+      // 已填入您提供的 Google Drive 圖片轉換後的直接連結
+      image: "https://lh3.googleusercontent.com/d/1MIJC9iezS6Yg5wfvrvkN4NnfAdx8ZCgi", 
       desc: "同軸直線流動結構確保膠料「最先進入、最先射出」，避免停留時間過長導致焦燒，是高精密橡膠生產的首選。",
       features: ["真實 FIFO 流程，無回流死角", "流動路徑短，大幅減少殘膠", "停留時間一致，品質極其均勻", "換色與清膠效率提升 50%"],
       specs: [
@@ -31,6 +33,7 @@ const productData = {
       id: "horizontal",
       title: "臥式橡(矽)膠射出成型機",
       model: "TRH 系列",
+      image: "/IMG_2522.JPG", 
       desc: "具備強大扭力的液壓馬達，確保高硬度膠料穩定進料，適用於製作結構複雜的多樣化製品。",
       features: ["強大進料扭力馬達", "精密螺桿設計，適應多種膠料", "生產循環快速，高產能效率", "靈活安裝各類複雜模具"],
       specs: [
@@ -44,6 +47,7 @@ const productData = {
       id: "vertical",
       title: "立式橡(矽)膠射出成型機",
       model: "TRV 系列",
+      image: "",
       desc: "PLC 精密控制系統，支援三段注射與保壓，為精密嵌件成型提供最高穩定性。",
       features: ["PLC 可編程控制系統", "三段注射壓力與流量調節", "靈活處理各類矽橡膠產品", "適合氟橡膠 O 型圈生產"],
       specs: [
@@ -56,6 +60,7 @@ const productData = {
       id: "lsr",
       title: "液態矽膠 LSR 射出機",
       model: "TGV 系列",
+      image: "",
       desc: "數位化色漿混配精確度達 0.1%，採用 Yuken 液態配件，確保注射過程均勻與計量精確。",
       features: ["數位化色漿混配系統", "LSR 專用料管與加料設計", "注射計量誤差極小化", "高效能液壓功能控制"],
       specs: [
@@ -70,6 +75,7 @@ const productData = {
       id: "tfs",
       title: "熱壓成型機",
       model: "TFS 系列",
+      image: "",
       desc: "雙動力獨立系統設計，兩軸完全獨立工作，具備慢速校模功能，安全且精確。",
       features: ["雙油泵雙馬達獨立作業", "慢速校模精確定位", "適用電子零件硫化成型", "結構強化，耐用度高"],
       specs: [
@@ -82,6 +88,7 @@ const productData = {
       id: "tvs",
       title: "真空熱壓成型機",
       model: "TVS 系列",
+      image: "",
       desc: "高負壓真空罩設計，4 秒內達成 -650mmHg 真空度，專治排氣困難之精密成品。",
       features: ["極速抽真空，減少氣泡產生", "接近完全真空的成型環境", "適合醫療藥蓋與導電用品", "精密邊緣應用表現卓越"],
       specs: [
@@ -96,6 +103,7 @@ const productData = {
       id: "rsd",
       title: "橡矽膠毛邊機",
       model: "RSD 系列",
+      image: "",
       desc: "空氣動力與離心力原理分離毛邊，一台機可抵 20-40 人手工拆邊效率。",
       features: ["處理製品直徑 3-150mm", "降低人工成本，提升產能", "適用多種密封圈與精密件", "穩定運行，低維護成本"],
       specs: [
@@ -108,6 +116,7 @@ const productData = {
       id: "sorting",
       title: "空氣篩選 + 上升機",
       model: "APM / LM 系列",
+      image: "",
       desc: "自動化分離產品毛屑並實現物料輸送，提升生產線潔淨度與自動化程度。",
       features: ["空氣動力有效分離毛屑", "風量可依產品比重調整", "自動輸送減少搬運", "全不銹鋼結構，耐腐蝕"],
       specs: [
@@ -142,7 +151,7 @@ const productData = {
   ]
 };
 
-export default function Page() {
+export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState({ type: '', msg: '' });
@@ -209,7 +218,7 @@ export default function Page() {
         </div>
         
         {isMenuOpen && (
-          <div className="md:hidden bg-white border-t p-4 space-y-4">
+          <div className="md:hidden bg-white border-t p-4 space-y-4 shadow-xl">
             <a href="#injection" onClick={() => setIsMenuOpen(false)} className="block font-bold">射出成型</a>
             <a href="#press" onClick={() => setIsMenuOpen(false)} className="block font-bold">熱壓系列</a>
             <a href="#peripheral" onClick={() => setIsMenuOpen(false)} className="block font-bold">週邊設備</a>
@@ -225,7 +234,7 @@ export default function Page() {
         </div>
         <div className="max-w-7xl mx-auto px-4 relative z-10 text-center">
           <h1 className="text-5xl md:text-6xl font-black mb-6">全方位橡矽膠成型解決方案</h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-10">追求卓越品質，提供高效、穩定的生產設備與技術支援</p>
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed">追求卓越品質，提供高效、穩定的生產設備與技術支援</p>
           <a href="#contact" className="inline-block bg-red-600 text-white px-10 py-4 rounded-lg font-bold hover:bg-red-700 transition shadow-lg shadow-red-500/50">立即聯繫諮詢</a>
         </div>
       </header>
@@ -256,9 +265,23 @@ export default function Page() {
                       ))}
                     </div>
                   </div>
-                  <div className="bg-gray-100 rounded-2xl flex flex-col items-center justify-center min-h-75 border-2 border-dashed border-gray-300">
-                    <Settings className="text-gray-400 mb-4 animate-spin-slow" size={48} />
-                    <p className="text-gray-400 font-bold">{p.title} 示意</p>
+                  {/* 圖片顯示邏輯 */}
+                  <div className="relative group overflow-hidden rounded-2xl border bg-gray-100 min-h-[400px] flex items-center justify-center shadow-inner">
+                    {p.image ? (
+                      <img 
+                        src={p.image} 
+                        alt={p.title} 
+                        className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105" 
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = 'https://via.placeholder.com/600x400?text=圖片載入失敗';
+                        }}
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center">
+                        <Settings className="text-gray-400 mb-4 animate-spin" size={48} />
+                        <p className="text-gray-400 font-bold">{p.title} 示意圖</p>
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="overflow-x-auto mt-8 bg-white rounded-xl border shadow-sm">
@@ -266,12 +289,12 @@ export default function Page() {
                     <thead className="bg-gray-900 text-white">
                       <tr>
                         <th className="px-6 py-4 text-left">規格項目 (單位)</th>
-                        {p.specs[0].values.map((_, i) => <th key={i} className="px-6 py-4">型號 {i+1}</th>)}
+                        {p.specs[0].values.map((_, i) => <th key={i} className="px-6 py-4">數據 {i+1}</th>)}
                       </tr>
                     </thead>
-                    <tbody className="divide-y">
+                    <tbody className="divide-y divide-gray-200">
                       {p.specs.map((spec, i) => (
-                        <tr key={i} className="hover:bg-gray-50">
+                        <tr key={i} className="hover:bg-gray-50 transition">
                           <td className="px-6 py-4 font-bold bg-gray-50 border-r text-left text-nowrap">{spec.label}</td>
                           {spec.values.map((v, j) => <td key={j} className="px-6 py-4">{v}</td>)}
                         </tr>
@@ -293,9 +316,16 @@ export default function Page() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               {productData.press.map((p) => (
-                <div key={p.id} className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
+                <div key={p.id} className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 flex flex-col group hover:border-red-500 transition">
+                  {p.image ? (
+                    <img src={p.image} alt={p.title} className="w-full h-56 object-contain rounded-xl mb-6 shadow-sm group-hover:scale-105 transition" />
+                  ) : (
+                    <div className="w-full h-56 bg-gray-100 rounded-xl mb-6 flex items-center justify-center border border-dashed text-gray-300">
+                      [此處放置 {p.model} 圖片]
+                    </div>
+                  )}
                   <h3 className="text-2xl font-bold text-red-600 mb-4">{p.title} ({p.model})</h3>
-                  <p className="text-gray-600 mb-8 h-12">{p.desc}</p>
+                  <p className="text-gray-600 mb-8 flex-grow">{p.desc}</p>
                   <ul className="space-y-3 mb-8">
                     {p.features.map((f, i) => (
                       <li key={i} className="flex items-center text-sm font-medium">
@@ -306,9 +336,9 @@ export default function Page() {
                   <div className="bg-gray-50 p-4 rounded-lg">
                     <h4 className="text-xs font-black uppercase text-gray-400 mb-3 tracking-widest">技術規格摘要</h4>
                     {p.specs.map((s, i) => (
-                      <div key={i} className="flex justify-between text-xs py-1 border-b last:border-0">
+                      <div key={i} className="flex justify-between text-xs py-1 border-b last:border-0 border-gray-200">
                         <span className="text-gray-500">{s.label}</span>
-                        <span className="font-bold">{s.values[0]} ~ {s.values[s.values.length-1]}</span>
+                        <span className="font-bold text-gray-900">{s.values[0]} ~ {s.values[s.values.length-1]}</span>
                       </div>
                     ))}
                   </div>
@@ -326,19 +356,22 @@ export default function Page() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {productData.peripheral.map((p) => (
-              <div key={p.id} className="p-6 bg-white border rounded-2xl hover:border-red-600 transition-all hover:shadow-2xl group">
+              <div key={p.id} className="p-6 bg-white border rounded-2xl hover:border-red-600 transition-all hover:shadow-2xl group flex flex-col">
                 <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center text-gray-400 mb-6 group-hover:bg-red-50 group-hover:text-red-600 transition-colors">
                   {p.id === 'rsd' && <Trash2 size={24} />}
                   {p.id === 'sorting' && <ArrowUpCircle size={24} />}
                   {(p.id === 'ras' || p.id === 'rcm') && <Ruler size={24} />}
                 </div>
+                {p.image && (
+                  <img src={p.image} alt={p.title} className="w-full h-32 object-contain rounded-lg mb-4" />
+                )}
                 <h4 className="text-lg font-bold mb-1">{p.title}</h4>
                 <p className="text-xs font-bold text-red-600 mb-4">{p.model}</p>
                 <p className="text-sm text-gray-500 mb-6 h-12 line-clamp-2">{p.desc}</p>
-                <div className="pt-4 border-t space-y-2">
+                <div className="pt-4 border-t mt-auto space-y-2 border-gray-100">
                   {p.specs.map((s, i) => (
                     <div key={i} className="flex justify-between text-[10px] font-black uppercase">
-                      <span className="text-gray-400">{s.label}</span>
+                      <span className="text-gray-400 tracking-tighter">{s.label}</span>
                       <span className="text-gray-900">{s.values[0]}</span>
                     </div>
                   ))}
@@ -396,20 +429,20 @@ export default function Page() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs font-black uppercase text-gray-400 mb-2">您的姓名</label>
-                  <input name="name" type="text" required className="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 outline-none" />
+                  <input name="name" type="text" required className="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 outline-none transition shadow-inner" />
                 </div>
                 <div>
                   <label className="block text-xs font-black uppercase text-gray-400 mb-2">聯繫電話</label>
-                  <input name="phone" type="tel" required className="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 outline-none" />
+                  <input name="phone" type="tel" required className="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 outline-none transition shadow-inner" />
                 </div>
               </div>
               <div>
                 <label className="block text-xs font-black uppercase text-gray-400 mb-2">電子郵件</label>
-                <input name="email" type="email" required className="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 outline-none" />
+                <input name="email" type="email" required className="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 outline-none transition shadow-inner" />
               </div>
               <div>
                 <label className="block text-xs font-black uppercase text-gray-400 mb-2">感興趣的產品類別</label>
-                <select name="product" className="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 outline-none">
+                <select name="product" className="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 outline-none appearance-none cursor-pointer shadow-inner">
                   <option>射出成型機 (FIFO/臥式/立式)</option>
                   <option>液態矽膠 LSR 機器</option>
                   <option>熱壓 / 真空熱壓成型機</option>
@@ -418,17 +451,17 @@ export default function Page() {
               </div>
               <div>
                 <label className="block text-xs font-black uppercase text-gray-400 mb-2">您的需求描述</label>
-                <textarea name="message" rows={4} className="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 outline-none" placeholder="例如：產品材料、預計產能、尺寸需求等..."></textarea>
+                <textarea name="message" rows={4} className="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 outline-none transition shadow-inner" placeholder="例如：產品材料、預計產能、尺寸需求等..."></textarea>
               </div>
               <button 
                 type="submit" 
                 disabled={isSubmitting}
-                className="w-full py-4 bg-red-600 text-white font-black rounded-xl hover:bg-red-700 disabled:bg-gray-400 transition-all shadow-xl shadow-red-200"
+                className="w-full py-4 bg-red-600 text-white font-black rounded-xl hover:bg-red-700 disabled:bg-gray-400 transition-all shadow-xl shadow-red-200 active:scale-95"
               >
                 {isSubmitting ? '正在發送...' : '提交需求諮詢'}
               </button>
               {submitStatus.msg && (
-                <p className={`text-center font-bold mt-4 p-3 rounded-lg ${submitStatus.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                <p className={`text-center font-bold mt-4 p-4 rounded-xl shadow-sm ${submitStatus.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
                   {submitStatus.msg}
                 </p>
               )}
@@ -437,8 +470,8 @@ export default function Page() {
         </div>
       </section>
 
-      <footer className="bg-black py-10 text-center text-gray-500 text-xs font-black uppercase tracking-[0.2em]">
-        © 2026 東鐵工程有限公司 TON TEIH. ALL RIGHTS RESERVED.
+      <footer className="bg-black py-10 text-center text-gray-500 text-[10px] font-black uppercase tracking-[0.3em]">
+        © 2026 東鐵工程有限公司 TON TEIH. ALL RIGHTS RESERVED. | 統一編號: 66450110
       </footer>
     </div>
   );
