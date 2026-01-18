@@ -20,7 +20,7 @@ const productData = {
       title: "先進先出 (FIFO) 射出成型機",
       model: "TGD 系列",
       // 已填入您提供的 Google Drive 圖片轉換後的直接連結
-      image: "https://lh3.googleusercontent.com/d/1MIJC9iezS6Yg5wfvrvkN4NnfAdx8ZCgi", 
+      image: "https://lh3.googleusercontent.com/d/1J6qsryVGZOg2jmIash79X8A4_PDbpPah", 
       desc: "同軸直線流動結構確保膠料「最先進入、最先射出」，避免停留時間過長導致焦燒，是高精密橡膠生產的首選。",
       features: ["真實 FIFO 流程，無回流死角", "流動路徑短，大幅減少殘膠", "停留時間一致，品質極其均勻", "換色與清膠效率提升 50%"],
       specs: [
