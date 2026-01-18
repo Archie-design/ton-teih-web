@@ -10,7 +10,7 @@ import {
 /**
  * 重要：請在此處填入您在 Google Apps Script 部署後取得的 Web App URL
  */
-const SCRIPT_URL = "您的_GAS_WEB_APP_URL";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwiYdDfk9YwjeauV1iuPXTs4i4sMC5GkR0HtbsORUAhWmo86BOQo6O8wtus5aiMVDWc/exec";
 
 // --- 十大產品數據定義 (圖片已改為本地資料夾路徑方式) ---
 // 圖片存放教學：
