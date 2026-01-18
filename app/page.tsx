@@ -63,7 +63,7 @@ const productData = {
       id: "vertical",
       title: "立式橡(矽)膠射出成型機",
       model: "TRV 系列",
-      image: "/images/products/trv.jpg",
+      image: "",
       desc: "採用先入料膠料注射系統，實現先進先出的模腔注射，操作簡單穩定。配備 PLC 可編程控制系統，精密調節壓力與流量。",
       features: [
         "PLC 控制：三段注射壓力與流量調節，三段保壓功能",
@@ -83,7 +83,7 @@ const productData = {
       id: "lsr",
       title: "液態矽膠 LSR 射出成型機",
       model: "TGV 系列",
-      image: "/images/products/tgv.jpg",
+      image: "",
       desc: "採用油研 (Yuken) 頂級配件與 LSR 專用料管組。色漿混配數位化，精確度達 0.1%，加料計量精密，專為液態矽膠高質量生產設計。",
       features: [
         "數位化混配：色漿混合精確度高達 0.1%",
@@ -105,7 +105,7 @@ const productData = {
       id: "tfs",
       title: "熱壓成型機系列",
       model: "TFS 系列",
-      image: "/images/products/tfs.jpg",
+      image: "",
       desc: "採用雙動力、雙油泵獨立設計。兩軸完全獨立工作，具備慢速校模功能，適用於各類電子零件、硫化成型產品。",
       features: [
         "獨立雙軸：可實現複雜模具運動和控制",
@@ -124,7 +124,7 @@ const productData = {
       id: "tvs",
       title: "真空熱壓成型機系列",
       model: "TVS 系列",
-      image: "/images/products/tvs.jpg",
+      image: "",
       desc: "高負壓真空罩設計，4 秒內即可完成 -650mmHg 以上之真空度。為模具提供接近完全真空環境，解決模具排氣難題。",
       features: [
         "極速真空：提高排氣性能，避免成品氣泡",
@@ -145,7 +145,7 @@ const productData = {
       id: "rsd",
       title: "橡矽膠毛邊機",
       model: "RSD 系列",
-      image: "/images/products/rsd.jpg",
+      image: "",
       desc: "利用空氣動力及離心力原理。單機可抵 20-40 人手工拆邊效率，適用於密封圈等橡膠精密成型後處理。",
       features: [
         "高效產能：單機效率提升 20-40 倍",
@@ -163,7 +163,7 @@ const productData = {
       id: "sorting",
       title: "空氣篩選與上升系統",
       model: "APM / LM 系列",
-      image: "/images/products/sorting.jpg",
+      image: "",
       desc: "利用空氣動力分離產品與毛屑，確保潔淨度要求。上升機實現自動輸送，大幅減少人工搬運。",
       features: [
         "風量調整：依產品比重調整風量以達到最佳分離",
@@ -180,7 +180,7 @@ const productData = {
       id: "ras",
       title: "自動稱重切料機",
       model: "RAS 系列",
-      image: "/images/products/ras.jpg",
+      image: "",
       desc: "設備具有自動稱重、補償與選別功能。採用 PLC 稱重模塊與伺服馬達驅動進給，切料穩定且精確度高。",
       features: [
         "智能選別：自動區分合格與不合格重量之料塊",
@@ -196,7 +196,7 @@ const productData = {
       id: "rcm",
       title: "長度重量切料機",
       model: "RCM 系列",
-      image: "/images/products/rcm.jpg",
+      image: "",
       desc: "具備長度與重量雙切換模式。採用伺服馬達精控進料，適合橡膠片、EVA、鋁片等多種板材切割。",
       features: [
         "多模式：切割長度與重量模式可自由切換",
