@@ -39,7 +39,7 @@ const productData = {
       id: "horizontal",
       title: "臥式橡(矽)膠射出成型機",
       model: "TRH 系列",
-      image: "", 
+      image: "/IMG_2522.JPG", 
       desc: "配備強大扭力之液壓馬達，確保高硬度膠料迅速均勻進料。具備靈活的模具適應性，適合形狀複雜的工業產品生產。",
       features: [
         "強力進料：確保硬度高之膠料均勻進料",
@@ -243,20 +243,29 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 selection:bg-red-100">
+    <div className="min-h-screen bg-white text-gray-900 selection:bg-red-100 overflow-x-hidden">
       
       {/* 導航欄 (Navbar) */}
       <nav className="fixed w-full bg-white/95 backdrop-blur-sm shadow-sm z-50 border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-20 items-center">
             <div className="flex items-center">
-              <img 
-                src="https://lh3.googleusercontent.com/d/1hHUT4K1j5SL7rBR5K9aYYvj12IG8aLXb" 
-                alt="TON TEIH Logo" 
-                className="h-14 rotate-90 mr-4"
-              />
-              <div>
-                <span className="text-xl font-black text-red-600 tracking-tight block">東鐵工程有限公司</span>
+              {/* 優化過的 Logo 容器 */}
+              <div className="h-14 w-14 flex items-center justify-center mr-4">
+                <img 
+                  src="https://lh3.googleusercontent.com/d/1hHUT4K1j5SL7rBR5K9aYYvj12IG8aLXb" 
+                  alt="TON TEIH Logo" 
+                  className="max-h-full max-w-full rotate-90 object-contain"
+                  loading="eager"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                    const parent = (e.target as HTMLImageElement).parentElement;
+                    if (parent) parent.innerHTML = '<span class="text-red-600 font-bold">TT</span>';
+                  }}
+                />
+              </div>
+              <div className="min-w-0">
+                <span className="text-lg md:text-xl font-black text-red-600 tracking-tight block truncate">東鐵工程有限公司</span>
                 <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">TON TEIH</span>
               </div>
             </div>
@@ -270,7 +279,7 @@ export default function App() {
               </a>
             </div>
 
-            <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <button className="md:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               {isMenuOpen ? <X /> : <Menu />}
             </button>
           </div>
@@ -278,9 +287,9 @@ export default function App() {
         
         {isMenuOpen && (
           <div className="md:hidden bg-white border-t p-4 space-y-4 shadow-xl">
-            <a href="#injection" onClick={() => setIsMenuOpen(false)} className="block font-bold">射出成型</a>
-            <a href="#press" onClick={() => setIsMenuOpen(false)} className="block font-bold">熱壓系列</a>
-            <a href="#peripheral" onClick={() => setIsMenuOpen(false)} className="block font-bold">週邊設備</a>
+            <a href="#injection" onClick={() => setIsMenuOpen(false)} className="block font-bold text-gray-700">射出成型</a>
+            <a href="#press" onClick={() => setIsMenuOpen(false)} className="block font-bold text-gray-700">熱壓系列</a>
+            <a href="#peripheral" onClick={() => setIsMenuOpen(false)} className="block font-bold text-gray-700">週邊設備</a>
             <a href="#contact" onClick={() => setIsMenuOpen(false)} className="block font-bold text-red-600">聯繫我們</a>
           </div>
         )}
@@ -343,7 +352,7 @@ export default function App() {
                   </div>
                 </div>
                 
-                {/* 規格表格 (代換標題為型號) */}
+                {/* 規格表格 - 已代換型號 */}
                 <div className="overflow-x-auto bg-white rounded-xl border shadow-sm">
                   <table className="w-full text-sm text-center">
                     <thead className="bg-gray-900 text-white">
