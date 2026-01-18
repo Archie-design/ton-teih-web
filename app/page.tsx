@@ -33,7 +33,7 @@ const productData = {
       id: "horizontal",
       title: "臥式橡(矽)膠射出成型機",
       model: "TRH 系列",
-      image: "/IMG_2522.JPG", 
+      image: "", 
       desc: "具備強大扭力的液壓馬達，確保高硬度膠料穩定進料，適用於製作結構複雜的多樣化製品。",
       features: ["強大進料扭力馬達", "精密螺桿設計，適應多種膠料", "生產循環快速，高產能效率", "靈活安裝各類複雜模具"],
       specs: [
