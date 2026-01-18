@@ -12,14 +12,17 @@ import {
  */
 const SCRIPT_URL = "您的_GAS_WEB_APP_URL";
 
-// --- 十大產品數據定義 (完整校對自原廠文件) ---
+// --- 十大產品數據定義 (圖片已改為本地資料夾路徑方式) ---
+// 圖片存放教學：
+// 1. 請在專案的 public 目錄下建立 images/products/ 資料夾
+// 2. 將對應的圖檔放入，並確保檔名與下方的路徑一致
 const productData = {
   injection: [
     {
       id: "fifo",
       title: "先進先出 (FIFO) 射出成型機",
       model: "TGD 系列",
-      image: "https://lh3.googleusercontent.com/d/1J6qsryVGZOg2jmIash79X8A4_PDbpPah", 
+      image: "/images/products/tgd.jpg", 
       desc: "確保膠料「最先進入、最先射出」，避免長時間滯留在加熱區而產生焦燒 (scorching) 或性能劣化。同軸直線流動結構能縮短停留時間，提升換模與清膠效率。",
       features: [
         "真實 FIFO 流程：膠料不回流、不滯留，品質穩定",
@@ -39,7 +42,7 @@ const productData = {
       id: "horizontal",
       title: "臥式橡(矽)膠射出成型機",
       model: "TRH 系列",
-      image: "/IMG_2522.JPG", 
+      image: "/images/products/trh.jpg", 
       desc: "配備強大扭力之液壓馬達，確保高硬度膠料迅速均勻進料。具備靈活的模具適應性，適合形狀複雜的工業產品生產。",
       features: [
         "強力進料：確保硬度高之膠料均勻進料",
@@ -60,7 +63,7 @@ const productData = {
       id: "vertical",
       title: "立式橡(矽)膠射出成型機",
       model: "TRV 系列",
-      image: "",
+      image: "/images/products/trv.jpg",
       desc: "採用先入料膠料注射系統，實現先進先出的模腔注射，操作簡單穩定。配備 PLC 可編程控制系統，精密調節壓力與流量。",
       features: [
         "PLC 控制：三段注射壓力與流量調節，三段保壓功能",
@@ -80,7 +83,7 @@ const productData = {
       id: "lsr",
       title: "液態矽膠 LSR 射出成型機",
       model: "TGV 系列",
-      image: "",
+      image: "/images/products/tgv.jpg",
       desc: "採用油研 (Yuken) 頂級配件與 LSR 專用料管組。色漿混配數位化，精確度達 0.1%，加料計量精密，專為液態矽膠高質量生產設計。",
       features: [
         "數位化混配：色漿混合精確度高達 0.1%",
@@ -102,8 +105,8 @@ const productData = {
       id: "tfs",
       title: "熱壓成型機系列",
       model: "TFS 系列",
-      image: "",
-      desc: "雙動力、雙油泵獨立設計。兩軸完全獨立工作，具備慢速校模功能，適用於各類電子零件、硫化成型產品。",
+      image: "/images/products/tfs.jpg",
+      desc: "採用雙動力、雙油泵獨立設計。兩軸完全獨立工作，具備慢速校模功能，適用於各類電子零件、硫化成型產品。",
       features: [
         "獨立雙軸：可實現複雜模具運動和控制",
         "安全校模：具備慢速校模功能，操作更精確",
@@ -121,7 +124,7 @@ const productData = {
       id: "tvs",
       title: "真空熱壓成型機系列",
       model: "TVS 系列",
-      image: "",
+      image: "/images/products/tvs.jpg",
       desc: "高負壓真空罩設計，4 秒內即可完成 -650mmHg 以上之真空度。為模具提供接近完全真空環境，解決模具排氣難題。",
       features: [
         "極速真空：提高排氣性能，避免成品氣泡",
@@ -142,7 +145,7 @@ const productData = {
       id: "rsd",
       title: "橡矽膠毛邊機",
       model: "RSD 系列",
-      image: "",
+      image: "/images/products/rsd.jpg",
       desc: "利用空氣動力及離心力原理。單機可抵 20-40 人手工拆邊效率，適用於密封圈等橡膠精密成型後處理。",
       features: [
         "高效產能：單機效率提升 20-40 倍",
@@ -160,7 +163,7 @@ const productData = {
       id: "sorting",
       title: "空氣篩選與上升系統",
       model: "APM / LM 系列",
-      image: "",
+      image: "/images/products/sorting.jpg",
       desc: "利用空氣動力分離產品與毛屑，確保潔淨度要求。上升機實現自動輸送，大幅減少人工搬運。",
       features: [
         "風量調整：依產品比重調整風量以達到最佳分離",
@@ -177,7 +180,7 @@ const productData = {
       id: "ras",
       title: "自動稱重切料機",
       model: "RAS 系列",
-      image: "",
+      image: "/images/products/ras.jpg",
       desc: "設備具有自動稱重、補償與選別功能。採用 PLC 稱重模塊與伺服馬達驅動進給，切料穩定且精確度高。",
       features: [
         "智能選別：自動區分合格與不合格重量之料塊",
@@ -193,7 +196,7 @@ const productData = {
       id: "rcm",
       title: "長度重量切料機",
       model: "RCM 系列",
-      image: "",
+      image: "/images/products/rcm.jpg",
       desc: "具備長度與重量雙切換模式。採用伺服馬達精控進料，適合橡膠片、EVA、鋁片等多種板材切割。",
       features: [
         "多模式：切割長度與重量模式可自由切換",
@@ -250,10 +253,10 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-20 items-center">
             <div className="flex items-center">
-              {/* 優化過的 Logo 容器 */}
+              {/* 優化過的 Logo 容器 - 改為讀取本地圖片 */}
               <div className="h-14 w-14 flex items-center justify-center mr-4">
                 <img 
-                  src="https://lh3.googleusercontent.com/d/1hHUT4K1j5SL7rBR5K9aYYvj12IG8aLXb" 
+                  src="/images/logo.png" 
                   alt="TON TEIH Logo" 
                   className="max-h-full max-w-full rotate-90 object-contain"
                   loading="eager"
@@ -286,11 +289,13 @@ export default function App() {
         </div>
         
         {isMenuOpen && (
-          <div className="md:hidden bg-white border-t p-4 space-y-4 shadow-xl">
-            <a href="#injection" onClick={() => setIsMenuOpen(false)} className="block font-bold text-gray-700">射出成型</a>
-            <a href="#press" onClick={() => setIsMenuOpen(false)} className="block font-bold text-gray-700">熱壓系列</a>
-            <a href="#peripheral" onClick={() => setIsMenuOpen(false)} className="block font-bold text-gray-700">週邊設備</a>
-            <a href="#contact" onClick={() => setIsMenuOpen(false)} className="block font-bold text-red-600">聯繫我們</a>
+          <div className="md:hidden bg-white border-t p-4 shadow-xl">
+            <div className="flex flex-col space-y-4 p-4">
+              <a href="#injection" onClick={() => setIsMenuOpen(false)} className="font-bold text-gray-700">射出成型</a>
+              <a href="#press" onClick={() => setIsMenuOpen(false)} className="font-bold text-gray-700">熱壓系列</a>
+              <a href="#peripheral" onClick={() => setIsMenuOpen(false)} className="font-bold text-gray-700">週邊設備</a>
+              <a href="#contact" onClick={() => setIsMenuOpen(false)} className="font-bold text-red-600">聯繫我們</a>
+            </div>
           </div>
         )}
       </nav>
@@ -352,7 +357,7 @@ export default function App() {
                   </div>
                 </div>
                 
-                {/* 規格表格 - 已代換型號 */}
+                {/* 規格表格 */}
                 <div className="overflow-x-auto bg-white rounded-xl border shadow-sm">
                   <table className="w-full text-sm text-center">
                     <thead className="bg-gray-900 text-white">
@@ -401,8 +406,15 @@ export default function App() {
                       </ul>
                     </div>
                     {p.image && (
-                      <div className="bg-white p-4 rounded-2xl shadow-xl">
-                        <img src={p.image} alt={p.title} className="w-full h-64 object-contain rounded-xl" />
+                      <div className="bg-white p-4 rounded-2xl shadow-xl flex items-center justify-center overflow-hidden">
+                        <img 
+                          src={p.image} 
+                          alt={p.title} 
+                          className="max-h-64 object-contain rounded-xl hover:scale-105 transition duration-500" 
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = 'https://via.placeholder.com/600x400?text=圖片載入失敗';
+                          }}
+                        />
                       </div>
                     )}
                   </div>
@@ -448,6 +460,13 @@ export default function App() {
                 <h4 className="text-xl font-bold mb-1">{p.title}</h4>
                 <p className="text-xs font-bold text-red-600 mb-4 tracking-widest">{p.model}</p>
                 <p className="text-sm text-gray-500 mb-6 leading-relaxed flex-grow">{p.desc}</p>
+                
+                {/* 產品圖顯示 (若有) */}
+                {p.image && (
+                  <div className="mb-6 rounded-xl overflow-hidden bg-gray-50 border h-40 flex items-center justify-center">
+                    <img src={p.image} alt={p.title} className="max-h-full object-contain p-2" />
+                  </div>
+                )}
                 
                 {/* 週邊規格微型表格 */}
                 <div className="pt-6 border-t border-gray-100">
