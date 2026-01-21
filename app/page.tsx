@@ -180,7 +180,7 @@ const productData = {
       id: "ras",
       title: "自動稱重切料機",
       model: "RAS 系列",
-      image: "/images/products/產品九png",
+      image: "/images/products/產品九.png",
       desc: "設備具有自動稱重、補償與選別功能。採用 PLC 稱重模塊與伺服馬達驅動進給，切料穩定且精確度高。",
       features: [
         "智能選別：自動區分合格與不合格重量之料塊",
