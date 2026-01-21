@@ -22,7 +22,7 @@ const productData = {
       id: "fifo",
       title: "先進先出 (FIFO) 射出成型機",
       model: "TGD 系列",
-      image: "/images/products/tgd.JPG", 
+      image: "/images/products/產品一.png", 
       desc: "確保膠料「最先進入、最先射出」，避免長時間滯留在加熱區而產生焦燒 (scorching) 或性能劣化。同軸直線流動結構能縮短停留時間，提升換模與清膠效率。",
       features: [
         "真實 FIFO 流程：膠料不回流、不滯留，品質穩定",
