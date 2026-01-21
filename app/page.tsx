@@ -145,7 +145,7 @@ const productData = {
       id: "rsd",
       title: "橡矽膠毛邊機",
       model: "RSD 系列",
-      image: "/images/products/產品七.png",
+      image: "",
       desc: "利用空氣動力及離心力原理。單機可抵 20-40 人手工拆邊效率，適用於密封圈等橡膠精密成型後處理。",
       features: [
         "高效產能：單機效率提升 20-40 倍",
@@ -163,7 +163,7 @@ const productData = {
       id: "sorting",
       title: "空氣篩選與上升系統",
       model: "APM / LM 系列",
-      image: "/images/products/產品八.png",
+      image: "",
       desc: "利用空氣動力分離產品與毛屑，確保潔淨度要求。上升機實現自動輸送，大幅減少人工搬運。",
       features: [
         "風量調整：依產品比重調整風量以達到最佳分離",
@@ -180,7 +180,7 @@ const productData = {
       id: "ras",
       title: "自動稱重切料機",
       model: "RAS 系列",
-      image: "/images/products/產品九.png",
+      image: "",
       desc: "設備具有自動稱重、補償與選別功能。採用 PLC 稱重模塊與伺服馬達驅動進給，切料穩定且精確度高。",
       features: [
         "智能選別：自動區分合格與不合格重量之料塊",
@@ -196,7 +196,7 @@ const productData = {
       id: "rcm",
       title: "長度重量切料機",
       model: "RCM 系列",
-      image: "/images/products/產品十.png",
+      image: "",
       desc: "具備長度與重量雙切換模式。採用伺服馬達精控進料，適合橡膠片、EVA、鋁片等多種板材切割。",
       features: [
         "多模式：切割長度與重量模式可自由切換",
