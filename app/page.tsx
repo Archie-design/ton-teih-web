@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { 
   Settings, Zap, CheckCircle, Factory, 
   MapPin, Phone, Mail, Cpu, 
-  Layers, Ruler, Trash2, ArrowUpCircle, Menu, X
+  Layers, Ruler, Trash2, ArrowUpCircle, Menu, X, ChevronDown
 } from 'lucide-react';
 
 /**
@@ -12,17 +12,15 @@ import {
  */
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwiYdDfk9YwjeauV1iuPXTs4i4sMC5GkR0HtbsORUAhWmo86BOQo6O8wtus5aiMVDWc/exec";
 
-// --- 十大產品數據定義 (圖片已改為本地資料夾路徑方式) ---
-// 圖片存放教學：
-// 1. 請在專案的 public 目錄下建立 images/products/ 資料夾
-// 2. 將對應的圖檔放入，並確保檔名與下方的路徑一致
+// --- 十大產品數據定義 ---
+// ⚠️ 注意：圖片檔案建議使用「英文小寫」命名（如 tgd.png），避免雲端伺服器無法讀取中文路徑。
 const productData = {
   injection: [
     {
       id: "fifo",
       title: "先進先出 (FIFO) 射出成型機",
       model: "TGD 系列",
-      image: "/images/products/產品一.png", 
+      image: "/images/products/product-1.png", // 原「產品一.png」
       desc: "確保膠料「最先進入、最先射出」，避免長時間滯留在加熱區而產生焦燒 (scorching) 或性能劣化。同軸直線流動結構能縮短停留時間，提升換模與清膠效率。",
       features: [
         "真實 FIFO 流程：膠料不回流、不滯留，品質穩定",
@@ -42,7 +40,7 @@ const productData = {
       id: "horizontal",
       title: "臥式橡(矽)膠射出成型機",
       model: "TRH 系列",
-      image: "/images/products/產品二.png", 
+      image: "/images/products/product-2.png", // 原「產品二.png」
       desc: "配備強大扭力之液壓馬達，確保高硬度膠料迅速均勻進料。具備靈活的模具適應性，適合形狀複雜的工業產品生產。",
       features: [
         "強力進料：確保硬度高之膠料均勻進料",
@@ -63,7 +61,7 @@ const productData = {
       id: "vertical",
       title: "立式橡(矽)膠射出成型機",
       model: "TRV 系列",
-      image: "/images/products/產品三.png",
+      image: "/images/products/product-3.png", // 原「產品三.png」
       desc: "採用先入料膠料注射系統，實現先進先出的模腔注射，操作簡單穩定。配備 PLC 可編程控制系統，精密調節壓力與流量。",
       features: [
         "PLC 控制：三段注射壓力與流量調節，三段保壓功能",
@@ -83,7 +81,7 @@ const productData = {
       id: "lsr",
       title: "液態矽膠 LSR 射出成型機",
       model: "TGV 系列",
-      image: "/images/products/產品四.png",
+      image: "/images/products/product-4.png", // 原「產品四.png」
       desc: "採用油研 (Yuken) 頂級配件與 LSR 專用料管組。色漿混配數位化，精確度達 0.1%，加料計量精密，專為液態矽膠高質量生產設計。",
       features: [
         "數位化混配：色漿混合精確度高達 0.1%",
@@ -105,7 +103,7 @@ const productData = {
       id: "tfs",
       title: "熱壓成型機系列",
       model: "TFS 系列",
-      image: "/images/products/產品五.png",
+      image: "/images/products/product-5.png", // 原「產品五.png」
       desc: "採用雙動力、雙油泵獨立設計。兩軸完全獨立工作，具備慢速校模功能，適用於各類電子零件、硫化成型產品。",
       features: [
         "獨立雙軸：可實現複雜模具運動和控制",
@@ -124,7 +122,7 @@ const productData = {
       id: "tvs",
       title: "真空熱壓成型機系列",
       model: "TVS 系列",
-      image: "/images/products/產品六.png",
+      image: "/images/products/product-6.png", // 原「產品六.png」
       desc: "高負壓真空罩設計，4 秒內即可完成 -650mmHg 以上之真空度。為模具提供接近完全真空環境，解決模具排氣難題。",
       features: [
         "極速真空：提高排氣性能，避免成品氣泡",
@@ -218,7 +216,7 @@ export default function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState({ type: '', msg: '' });
 
-    // 跳回頂部處理函式
+  // 跳回頂部處理函式
   const scrollToTop = (e: React.MouseEvent) => {
     e.preventDefault();
     window.scrollTo({
@@ -261,8 +259,7 @@ export default function App() {
       <nav className="fixed w-full bg-white/95 backdrop-blur-sm shadow-sm z-50 border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-20 items-center">
-            <div className="flex items-center">
-            {/* 修改後的 Logo 與公司名區域：點擊可回到頂部 */}
+            {/* Logo 與公司名區域：點擊可回到頂部 */}
             <a 
               href="#" 
               onClick={scrollToTop} 
@@ -273,7 +270,7 @@ export default function App() {
                 <img 
                   src="/images/logo.png" 
                   alt="TON TEIH" 
-                  className="max-h-full max-w-full rotate-90 object-contain group-hover:scale-110 transition-transform duration-300"
+                  className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-300"
                   loading="eager"
                   onError={(e) => {
                     const img = e.target as HTMLImageElement;
@@ -284,16 +281,16 @@ export default function App() {
                 />
               </div>
               <div className="min-w-0">
-                <span className="text-lg md:text-xl font-black text-red-600 tracking-tight block truncate">東鐵工程有限公司</span>
+                <span className="text-lg md:text-xl font-black text-red-600 tracking-tight block truncate group-hover:text-red-700 transition-colors">東鐵工程有限公司</span>
                 <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">TON TEIH</span>
               </div>
-            </div>
+            </a>
 
             <div className="hidden md:flex items-center space-x-8 text-sm font-bold text-gray-600">
               <a href="#injection" className="hover:text-red-600 transition">射出成型</a>
               <a href="#press" className="hover:text-red-600 transition">熱壓系列</a>
               <a href="#peripheral" className="hover:text-red-600 transition">週邊設備</a>
-              <a href="#contact" className="bg-red-600 text-white px-5 py-2.5 rounded hover:bg-red-700 transition">
+              <a href="#contact" className="bg-red-600 text-white px-5 py-2.5 rounded hover:bg-red-700 transition shadow-sm shadow-red-200">
                 聯繫我們
               </a>
             </div>
@@ -322,7 +319,7 @@ export default function App() {
           <img src="https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?auto=format&fit=crop&q=80&w=2000" className="w-full h-full object-cover" alt="Background" />
         </div>
         <div className="max-w-7xl mx-auto px-4 relative z-10 text-center">
-          <h1 className="text-5xl md:text-6xl font-black mb-6 tracking-tighter">全方位橡矽膠成型解決方案</h1>
+          <h1 className="text-5xl md:text-6xl font-black mb-6 tracking-tighter text-balance">全方位橡矽膠成型解決方案</h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed font-medium">追求卓越品質，提供高效、穩定的生產設備與技術支援</p>
           <a href="#contact" className="inline-block bg-red-600 text-white px-10 py-4 rounded-lg font-bold hover:bg-red-700 transition shadow-lg shadow-red-500/50">立即聯繫諮詢</a>
         </div>
@@ -341,7 +338,7 @@ export default function App() {
             {productData.injection.map((p) => (
               <div key={p.id} className="scroll-mt-24">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-10">
-                  <div>
+                  <div className="order-2 lg:order-1">
                     <span className="text-red-600 font-bold uppercase tracking-widest text-sm">{p.model}</span>
                     <h3 className="text-2xl font-bold mt-2 mb-4">{p.title}</h3>
                     <p className="text-gray-600 mb-6 leading-relaxed">{p.desc}</p>
@@ -354,14 +351,25 @@ export default function App() {
                       ))}
                     </div>
                   </div>
-                  <div className="relative group overflow-hidden rounded-2xl border bg-gray-100 min-h-[400px] flex items-center justify-center shadow-inner">
+                  <div className="order-1 lg:order-2 relative group overflow-hidden rounded-2xl border bg-gray-100 min-h-[300px] md:min-h-[400px] flex items-center justify-center shadow-inner">
                     {p.image ? (
                       <img 
                         src={p.image} 
                         alt={p.title} 
                         className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105" 
                         onError={(e) => {
-                          (e.target as HTMLImageElement).src = 'https://via.placeholder.com/600x400?text=圖片載入失敗';
+                          const img = e.target as HTMLImageElement;
+                          img.style.display = 'none';
+                          const parent = img.parentElement;
+                          if (parent) {
+                            parent.innerHTML = `
+                              <div class="flex flex-col items-center p-8 text-center">
+                                <span class="text-gray-300 mb-4 uppercase font-black text-4xl opacity-20">${p.id}</span>
+                                <p class="text-gray-400 font-bold">${p.title}</p>
+                                <p class="text-[10px] text-gray-300 mt-2">檔案路徑: public${p.image}</p>
+                              </div>
+                            `;
+                          }
                         }}
                       />
                     ) : (
@@ -422,11 +430,11 @@ export default function App() {
                       </ul>
                     </div>
                     {p.image && (
-                      <div className="bg-white p-4 rounded-2xl shadow-xl flex items-center justify-center overflow-hidden">
+                      <div className="bg-white p-4 rounded-2xl shadow-xl flex items-center justify-center overflow-hidden h-64 border">
                         <img 
                           src={p.image} 
                           alt={p.title} 
-                          className="max-h-64 object-contain rounded-xl hover:scale-105 transition duration-500" 
+                          className="max-h-full object-contain rounded-xl hover:scale-105 transition duration-500" 
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = 'https://via.placeholder.com/600x400?text=圖片載入失敗';
                           }}
@@ -434,12 +442,11 @@ export default function App() {
                       </div>
                     )}
                   </div>
-                  {/* 熱壓規格表格 */}
                   <div className="overflow-x-auto bg-white rounded-xl border shadow-sm">
                     <table className="w-full text-sm text-center">
                       <thead className="bg-red-700 text-white">
                         <tr>
-                          <th className="px-6 py-4 text-left">規格 / 型號</th>
+                          <th className="px-6 py-4 text-left whitespace-nowrap">規格 / 型號</th>
                           {p.specs[0].values.map((modelName, i) => (
                             <th key={i} className="px-6 py-4 whitespace-nowrap min-w-[120px]">{modelName}</th>
                           ))}
@@ -474,17 +481,15 @@ export default function App() {
                   {p.id === 'rsd' ? <Trash2 size={24} /> : p.id === 'sorting' ? <ArrowUpCircle size={24} /> : <Ruler size={24} />}
                 </div>
                 <h4 className="text-xl font-bold mb-1">{p.title}</h4>
-                <p className="text-xs font-bold text-red-600 mb-4 tracking-widest">{p.model}</p>
+                <p className="text-xs font-bold text-red-600 mb-4 tracking-widest uppercase">{p.model}</p>
                 <p className="text-sm text-gray-500 mb-6 leading-relaxed flex-grow">{p.desc}</p>
                 
-                {/* 產品圖顯示 (若有) */}
                 {p.image && (
                   <div className="mb-6 rounded-xl overflow-hidden bg-gray-50 border h-40 flex items-center justify-center">
-                    <img src={p.image} alt={p.title} className="max-h-full object-contain p-2" />
+                    <img src={p.image} alt={p.title} className="max-h-full object-contain p-2 hover:scale-110 transition duration-300" />
                   </div>
                 )}
                 
-                {/* 週邊規格微型表格 */}
                 <div className="pt-6 border-t border-gray-100">
                    <div className="text-[10px] font-black uppercase text-gray-400 mb-4 tracking-widest">技術規格一覽</div>
                    <div className="space-y-3">
@@ -506,12 +511,14 @@ export default function App() {
       {/* 聯繫區塊 */}
       <section id="contact" className="bg-gray-900 text-white py-24 scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
-          <div>
-            <h2 className="text-4xl font-black mb-8 leading-tight">歡迎聯繫<br />技術諮詢</h2>
-            <p className="text-gray-400 text-lg mb-12 leading-relaxed">
-              東鐵工程提供從切割、射出到後處理的完整生產解決方案。如果您有特定機型需求或客製化專案，請填寫表單，我們的專家將在 24 小時內與您聯繫。
-            </p>
-            <div className="space-y-8">
+          <div className="space-y-12">
+            <div>
+              <h2 className="text-4xl font-black mb-8 leading-tight">歡迎聯繫<br />技術諮詢</h2>
+              <p className="text-gray-400 text-lg mb-12 leading-relaxed font-medium text-balance">
+                東鐵工程提供從切割、射出到後處理的完整生產解決方案。如果您有特定機型需求或客製化專案，請填寫表單，我們將在 24 小時內與您聯繫。
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
               <div className="flex items-start">
                 <MapPin className="text-red-500 mr-4 mt-1" />
                 <div>
@@ -543,40 +550,43 @@ export default function App() {
             </div>
           </div>
 
-          <div className="bg-white p-10 rounded-3xl shadow-2xl text-gray-900">
-            <h4 className="text-2xl font-black mb-8">需求諮詢表單</h4>
+          <div className="bg-white p-10 rounded-3xl shadow-2xl text-gray-900 border border-gray-100">
+            <h4 className="text-2xl font-black mb-8 tracking-tighter">需求諮詢表單</h4>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-xs font-black uppercase text-gray-400 mb-2">您的姓名</label>
-                  <input name="name" type="text" required className="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 outline-none transition shadow-inner" />
+                  <label className="block text-xs font-black uppercase text-gray-400 mb-2 tracking-widest">您的姓名</label>
+                  <input name="name" type="text" required className="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 outline-none transition" />
                 </div>
                 <div>
-                  <label className="block text-xs font-black uppercase text-gray-400 mb-2">聯繫電話</label>
-                  <input name="phone" type="tel" required className="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 outline-none transition shadow-inner" />
+                  <label className="block text-xs font-black uppercase text-gray-400 mb-2 tracking-widest">聯繫電話</label>
+                  <input name="phone" type="tel" required className="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 outline-none transition" />
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-black uppercase text-gray-400 mb-2">電子郵件</label>
-                <input name="email" type="email" required className="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 outline-none transition shadow-inner" />
+                <label className="block text-xs font-black uppercase text-gray-400 mb-2 tracking-widest">電子郵件</label>
+                <input name="email" type="email" required className="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 outline-none transition" />
               </div>
               <div>
-                <label className="block text-xs font-black uppercase text-gray-400 mb-2">感興趣的產品類別</label>
-                <select name="product" className="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 outline-none appearance-none cursor-pointer shadow-inner">
-                  <option>射出成型機 (FIFO/臥式/立式)</option>
-                  <option>液態矽膠 LSR 機器</option>
-                  <option>熱壓 / 真空熱壓成型機</option>
-                  <option>週邊設備 (毛邊/篩選/切料)</option>
-                </select>
+                <label className="block text-xs font-black uppercase text-gray-400 mb-2 tracking-widest">興趣產品類別</label>
+                <div className="relative">
+                  <select name="product" className="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 outline-none cursor-pointer appearance-none">
+                    <option>射出成型機 (FIFO/臥式/立式)</option>
+                    <option>液態矽膠 LSR 機器</option>
+                    <option>熱壓 / 真空熱壓成型機</option>
+                    <option>週邊設備 (毛邊/篩選/切料)</option>
+                  </select>
+                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400" size={16} />
+                </div>
               </div>
               <div>
-                <label className="block text-xs font-black uppercase text-gray-400 mb-2">您的需求描述</label>
-                <textarea name="message" rows={4} className="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 outline-none transition shadow-inner" placeholder="例如：產品材料、預計產能、尺寸需求等..."></textarea>
+                <label className="block text-xs font-black uppercase text-gray-400 mb-2 tracking-widest">您的需求描述</label>
+                <textarea name="message" rows={4} className="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 outline-none transition" placeholder="例如：產品材料、預計產能需求..."></textarea>
               </div>
               <button 
                 type="submit" 
                 disabled={isSubmitting}
-                className="w-full py-4 bg-red-600 text-white font-black rounded-xl hover:bg-red-700 disabled:bg-gray-400 transition-all shadow-xl shadow-red-200 active:scale-95"
+                className="w-full py-4 bg-red-600 text-white font-black rounded-xl hover:bg-red-700 disabled:bg-gray-400 transition-all shadow-xl shadow-red-200 active:scale-95 flex items-center justify-center space-x-2"
               >
                 {isSubmitting ? '正在發送...' : '提交需求諮詢'}
               </button>
@@ -590,8 +600,13 @@ export default function App() {
         </div>
       </section>
 
-      <footer className="bg-black py-10 text-center text-gray-500 text-[10px] font-black uppercase tracking-[0.3em]">
-        © 2026 東鐵工程有限公司 TON TEIH. ALL RIGHTS RESERVED. | 統一編號: 66450110
+      <footer className="bg-black py-12 text-center border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-4">
+          <p className="text-gray-500 text-[10px] font-black uppercase tracking-[0.4em] mb-4">© 2026 東鐵工程有限公司 TON TEIH. ALL RIGHTS RESERVED.</p>
+          <div className="text-gray-700 text-[10px] font-bold space-x-4">
+            <span>統一編號: 66450110</span>
+          </div>
+        </div>
       </footer>
     </div>
   );
