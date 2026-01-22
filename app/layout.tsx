@@ -4,9 +4,17 @@ import { Metadata } from 'next';
 
 const inter = Inter({ subsets: ['latin'] });
 
+/**
+ * 在這裡設定 SEO 與 Google 驗證
+ * 注意：google 欄位只需填入 content 的純字串值
+ */
 export const metadata: Metadata = {
   title: '東鐵工程有限公司 - TON TEIH',
   description: '全方位橡矽膠成型解決方案，提供高效、穩定的生產設備。',
+  verification: {
+    // 修正後：移除 "google-site-verification=" 前綴
+    google: 'kp6O4EhbWhtR37eTZteEE71_3NtsXufLXOCeP3RM-Ls', 
+  },
 };
 
 export default function RootLayout({
