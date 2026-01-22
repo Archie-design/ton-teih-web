@@ -218,6 +218,15 @@ export default function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState({ type: '', msg: '' });
 
+    // 跳回頂部處理函式
+  const scrollToTop = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -253,16 +262,23 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-20 items-center">
             <div className="flex items-center">
-              {/* 優化過的 Logo 容器 - 改為讀取本地圖片 */}
-              <div className="h-14 w-14 flex items-center justify-center mr-4">
+            {/* 修改後的 Logo 與公司名區域：點擊可回到頂部 */}
+            <a 
+              href="#" 
+              onClick={scrollToTop} 
+              className="flex items-center group cursor-pointer"
+              aria-label="回到首頁頂部"
+            >
+              <div className="h-12 w-12 flex items-center justify-center mr-3 relative">
                 <img 
                   src="/images/logo.png" 
-                  alt="TON TEIH Logo" 
-                  className="max-h-full max-w-full rotate-90 object-contain"
+                  alt="TON TEIH" 
+                  className="max-h-full max-w-full rotate-90 object-contain group-hover:scale-110 transition-transform duration-300"
                   loading="eager"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                    const parent = (e.target as HTMLImageElement).parentElement;
+                    const img = e.target as HTMLImageElement;
+                    img.style.display = 'none';
+                    const parent = img.parentElement;
                     if (parent) parent.innerHTML = '<span class="text-red-600 font-bold">TT</span>';
                   }}
                 />
