@@ -44,3 +44,6 @@ next-env.d.ts
 docs/*.json
 repomix-output.xml
 temp/
+
+# claude agent skills (local only)
+.agents/
