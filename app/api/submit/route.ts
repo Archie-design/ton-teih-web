@@ -12,7 +12,7 @@ async function sendNotification(subject: string, html: string) {
     headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
     body: JSON.stringify({
       from: "東鐵工程系統通知 <notify@tonteih.com>",
-      to: [notifyEmail],
+      to: notifyEmail.split(",").map((e) => e.trim()),
       subject,
       html,
     }),
