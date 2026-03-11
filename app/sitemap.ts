@@ -1,21 +1,29 @@
-import { MetadataRoute } from 'next'
+import { MetadataRoute } from "next";
+import { getUsedEquipments } from "@/lib/api/firestore";
 
-/**
- * 這份檔案會由 Next.js 自動編譯為 /sitemap.xml
- * 幫助 Google 爬蟲了解網頁的更新頻率與權重
- */
-export default function sitemap(): MetadataRoute.Sitemap {
-  // 提醒：若您尚未完成域名綁定，測試時可暫時改回 .vercel.app 網址
-  // 但正式上線與提交 Search Console 時，必須使用您的正式網域
-  const baseUrl = 'https://www.tonteih.com'
+const baseUrl = "https://www.tonteih.com";
 
-  return [
-    {
-      url: baseUrl,               // 網站首頁網址
-      lastModified: new Date(),   // 最後修改時間（顯示為當前時間）
-      changeFrequency: 'monthly', // 告知 Google 內容大約每月更新一次
-      priority: 1.0,              // 權重最高 (1.0 代表首頁)
-    },
-    // 如果未來增加了 /about 或 /products 獨立分頁，請在此處繼續新增物件
-  ]
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // 靜態路由
+  const staticRoutes: MetadataRoute.Sitemap = [
+    { url: baseUrl, lastModified: new Date(), changeFrequency: "monthly", priority: 1.0 },
+    { url: `${baseUrl}/used-equipment`, lastModified: new Date(), changeFrequency: "daily", priority: 0.8 },
+    { url: `${baseUrl}/trade-in`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
+  ];
+
+  // 動態機台詳情頁（從 Firestore 讀取）
+  let machineRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const machines = await getUsedEquipments();
+    machineRoutes = machines.map((m) => ({
+      url: `${baseUrl}/used-equipment/${m.id}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+    }));
+  } catch {
+    // Firestore 不可用時略過動態路由，不影響靜態 sitemap
+  }
+
+  return [...staticRoutes, ...machineRoutes];
 }
