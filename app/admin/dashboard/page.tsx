@@ -1,5 +1,7 @@
 import { getDb } from "@/lib/firebase/admin";
 import AdminNav from "@/components/AdminNav";
+
+export const dynamic = "force-dynamic";
 import { MessageSquare, Truck, Factory, AlertCircle } from "lucide-react";
 import Link from "next/link";
 
