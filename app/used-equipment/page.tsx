@@ -1,6 +1,7 @@
 import { getUsedEquipments } from "@/lib/api/firestore";
 import { EyeOff, ShieldCheck } from "lucide-react";
 import UsedEquipmentClientView from "./ClientView";
+import SubscribeForm from "@/components/SubscribeForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -75,6 +76,9 @@ export default async function UsedEquipmentPage() {
         </div>
       </section>
 
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
+        <SubscribeForm />
+      </div>
       <UsedEquipmentClientView initialMachines={machines} />
     </div>
   );

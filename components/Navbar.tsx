@@ -65,6 +65,9 @@ export default function Navbar() {
                         >
                             認證二手機交易
                         </Link>
+                        <Link href="/faq" className="hover:text-red-600 transition">
+                            常見問題
+                        </Link>
                         <Link href="/#contact" className="hover:text-red-600 transition">
                             聯繫我們
                         </Link>
@@ -115,6 +118,13 @@ export default function Navbar() {
                             className="font-bold text-red-600"
                         >
                             認證二手機交易
+                        </Link>
+                        <Link
+                            href="/faq"
+                            onClick={() => setIsMenuOpen(false)}
+                            className="font-bold text-slate-700"
+                        >
+                            常見問題
                         </Link>
                         <Link
                             href="/#contact"

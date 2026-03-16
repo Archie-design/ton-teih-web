@@ -4,6 +4,9 @@
 export const SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbwiYdDfk9YwjeauV1iuPXTs4i4sMC5GkR0HtbsORUAhWmo86BOQo6O8wtus5aiMVDWc/exec";
 
+// LINE 聯絡資訊（待確認正確 ID 後更新）
+export const LINE_ID = "h0973357788";
+
 // --- 十大產品數據定義 ---
 // ⚠️ 注意：圖片檔案建議使用「英文小寫」命名（如 tgd.png），避免雲端伺服器無法讀取中文路徑。
 export const productData = {

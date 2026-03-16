@@ -2,6 +2,7 @@ import { getMachineById, getUsedEquipments } from "@/lib/api/firestore";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import MachineDetailClient from "./MachineDetailClient";
+import RelatedMachines from "./RelatedMachines";
 
 export const revalidate = 300;
 
@@ -37,11 +38,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function MachineDetailPage({ params }: Props) {
   const { id } = await params;
-  const machine = await getMachineById(id);
+  const [machine, allMachines] = await Promise.all([
+    getMachineById(id),
+    getUsedEquipments(),
+  ]);
 
   if (!machine) {
     notFound();
   }
+
+  const relatedMachines = allMachines
+    .filter((m) => m.id !== id && m.category === machine.category)
+    .slice(0, 3);
 
   return (
     <div className="bg-slate-50 min-h-screen pt-20">
@@ -64,7 +72,12 @@ export default async function MachineDetailPage({ params }: Props) {
         </div>
       </section>
 
-      <MachineDetailClient machine={machine} />
+      <MachineDetailClient
+        machine={machine}
+        isSold={machine.tradingStatus === "sold" || machine.tradingStatus === "已售出"}
+      />
+
+      <RelatedMachines machines={relatedMachines} />
 
       {/* JSON-LD Product 結構化資料 */}
       <script
@@ -83,7 +96,7 @@ export default async function MachineDetailPage({ params }: Props) {
               priceCurrency: "TWD",
               price: machine.price,
               availability:
-                machine.tradingStatus === "已售出"
+                (machine.tradingStatus === "已售出" || machine.tradingStatus === "sold")
                   ? "https://schema.org/SoldOut"
                   : "https://schema.org/InStock",
               seller: {

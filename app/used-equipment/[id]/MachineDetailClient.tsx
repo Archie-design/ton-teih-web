@@ -8,9 +8,10 @@ import { ShieldCheck, MapPin, CheckCircle } from "lucide-react";
 
 interface Props {
   machine: TradingItem;
+  isSold?: boolean;
 }
 
-export default function MachineDetailClient({ machine }: Props) {
+export default function MachineDetailClient({ machine, isSold = false }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const closeModal = () => setIsModalOpen(false);
@@ -129,22 +130,43 @@ export default function MachineDetailClient({ machine }: Props) {
               通過油壓、電路、PLC 等核心項目技術檢測
             </div>
 
+            {/* 已售出橫幅 */}
+            {isSold && (
+              <div className="mb-6 p-4 bg-slate-100 border border-slate-200 rounded-2xl flex items-center gap-3">
+                <span className="shrink-0 px-3 py-1 bg-slate-800 text-white text-[10px] font-black rounded-sm tracking-widest uppercase">
+                  已售出
+                </span>
+                <p className="text-sm font-bold text-slate-600">
+                  此機台已售出。如有需求，歡迎查看相似設備或直接聯繫我們。
+                </p>
+              </div>
+            )}
+
             {/* 價格 + CTA */}
             <div className="bg-slate-900 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div>
                 <p className="text-xs font-black uppercase tracking-widest text-slate-400 mb-1">參考售價</p>
                 <p className="text-3xl font-black text-white">
-                  {machine.price > 0
+                  {isSold ? "已售出" : machine.price > 0
                     ? `NT$ ${machine.price.toLocaleString()}`
                     : "洽詢業務"}
                 </p>
               </div>
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="w-full sm:w-auto px-8 py-4 bg-red-600 hover:bg-red-700 text-white font-black rounded-xl text-xs uppercase tracking-widest shadow-xl shadow-red-600/30 transition-all active:scale-95 cursor-pointer"
-              >
-                詢問此設備
-              </button>
+              {isSold ? (
+                <a
+                  href={`/used-equipment?category=${encodeURIComponent(machine.category)}`}
+                  className="w-full sm:w-auto px-8 py-4 bg-slate-600 hover:bg-slate-700 text-white font-black rounded-xl text-xs uppercase tracking-widest transition-all active:scale-95 cursor-pointer text-center"
+                >
+                  查看相似機台
+                </a>
+              ) : (
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="w-full sm:w-auto px-8 py-4 bg-red-600 hover:bg-red-700 text-white font-black rounded-xl text-xs uppercase tracking-widest shadow-xl shadow-red-600/30 transition-all active:scale-95 cursor-pointer"
+                >
+                  詢問此設備
+                </button>
+              )}
             </div>
           </div>
         </div>

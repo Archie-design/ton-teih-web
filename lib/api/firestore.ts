@@ -97,6 +97,13 @@ export async function uploadUsedEquipment(payload: Record<string, unknown>) {
       createdAt: new Date(),
     });
 
+    // 非同步通知訂閱者，不阻塞回應
+    notifySubscribers(
+      String(payload.name || ""),
+      ref.id,
+      String(payload.category || ""),
+    ).catch(() => {});
+
     return { success: true, id: ref.id };
   } catch (error) {
     console.error("Error uploading equipment:", error);
@@ -105,6 +112,63 @@ export async function uploadUsedEquipment(payload: Record<string, unknown>) {
       error: error instanceof Error ? error.message : String(error),
     };
   }
+}
+
+// ─── 訂閱者管理 ──────────────────────────────────────────────────────────────
+
+export async function addSubscriber(email: string): Promise<{ success: boolean; duplicate?: boolean }> {
+  try {
+    const db = getDb();
+    const existing = await db.collection("subscribers").where("email", "==", email).limit(1).get();
+    if (!existing.empty) return { success: true, duplicate: true };
+    await db.collection("subscribers").add({ email, createdAt: new Date(), isActive: true });
+    return { success: true };
+  } catch (error) {
+    console.error("Error adding subscriber:", error);
+    return { success: false };
+  }
+}
+
+export async function getActiveSubscribers(): Promise<string[]> {
+  try {
+    const db = getDb();
+    const snapshot = await db.collection("subscribers").where("isActive", "==", true).get();
+    return snapshot.docs.map((doc) => doc.data().email as string);
+  } catch (error) {
+    console.error("Error fetching subscribers:", error);
+    return [];
+  }
+}
+
+async function notifySubscribers(machineName: string, machineId: string, category: string) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return;
+
+  const emails = await getActiveSubscribers();
+  if (emails.length === 0) return;
+
+  const url = `https://www.tonteih.com/used-equipment/${machineId}`;
+  const html = `
+    <div style="font-family:sans-serif;max-width:560px;margin:auto;padding:24px">
+      <p style="font-size:11px;font-weight:700;letter-spacing:4px;color:#DC2626;text-transform:uppercase;margin-bottom:16px">TON TEIH — 新機到貨通知</p>
+      <h1 style="font-size:22px;font-weight:900;color:#111;margin-bottom:8px">${machineName}</h1>
+      <p style="color:#64748b;font-size:14px;margin-bottom:24px">分類：${category}</p>
+      <a href="${url}" style="display:inline-block;background:#DC2626;color:#fff;font-weight:900;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:14px 28px;border-radius:8px;text-decoration:none">查看設備詳情</a>
+      <hr style="margin:32px 0;border:none;border-top:1px solid #e2e8f0">
+      <p style="font-size:11px;color:#94a3b8">您收到此信是因為您訂閱了東鐵工程新機到貨通知。</p>
+    </div>
+  `;
+
+  await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      from: "東鐵工程 <notify@tonteih.com>",
+      to: emails,
+      subject: `【新機到貨】${machineName}`,
+      html,
+    }),
+  }).catch((e) => console.warn("Subscriber notification failed:", e));
 }
 
 function convertDriveUrl(url: string): string {

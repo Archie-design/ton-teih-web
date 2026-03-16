@@ -120,8 +120,17 @@ export default function UsedEquipmentClientView({ initialMachines }: Props) {
                                         </span>
                                     </div>
 
+                                    {/* 已售出遮罩 */}
+                                    {(machine.tradingStatus === "sold" || machine.tradingStatus === "已售出") && (
+                                        <div className="absolute inset-0 bg-slate-900/60 flex items-center justify-center z-10">
+                                            <span className="bg-slate-900 text-white text-xs font-black px-4 py-2 rounded-sm tracking-widest uppercase shadow-xl">
+                                                已售出
+                                            </span>
+                                        </div>
+                                    )}
+
                                     {/* 標籤 */}
-                                    <div className="absolute top-4 left-4 flex flex-col gap-2">
+                                    <div className="absolute top-4 left-4 flex flex-col gap-2 z-20">
                                         {machine.isOfficial && (
                                             <span className="bg-red-600 text-white text-[10px] font-black px-2.5 py-1 rounded-sm shadow-lg flex items-center">
                                                 <ShieldCheck size={12} className="mr-1" /> 官方認證
@@ -179,12 +188,21 @@ export default function UsedEquipmentClientView({ initialMachines }: Props) {
                                             />{" "}
                                             通過油壓與電路穩定測試
                                         </div>
-                                        <button
-                                            onClick={() => openInquiryModal(machine)}
-                                            className="w-full flex justify-center py-3.5 px-4 rounded-xl font-black text-xs uppercase tracking-widest bg-slate-900 text-white hover:bg-red-600 transition-all shadow-xl hover:shadow-red-600/30 active:scale-95"
-                                        >
-                                            詢問此設備
-                                        </button>
+                                        {(machine.tradingStatus === "sold" || machine.tradingStatus === "已售出") ? (
+                                            <a
+                                                href={`/used-equipment/${machine.id}`}
+                                                className="w-full flex justify-center py-3.5 px-4 rounded-xl font-black text-xs uppercase tracking-widest bg-slate-300 text-slate-500 transition-all cursor-pointer"
+                                            >
+                                                查看詳情
+                                            </a>
+                                        ) : (
+                                            <button
+                                                onClick={() => openInquiryModal(machine)}
+                                                className="w-full flex justify-center py-3.5 px-4 rounded-xl font-black text-xs uppercase tracking-widest bg-slate-900 text-white hover:bg-red-600 transition-all shadow-xl hover:shadow-red-600/30 active:scale-95 cursor-pointer"
+                                            >
+                                                詢問此設備
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             </div>

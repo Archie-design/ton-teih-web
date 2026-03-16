@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import LineFloatingButton from "@/components/LineFloatingButton";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -95,6 +96,7 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Footer />
+        <LineFloatingButton />
         <Analytics />
         <SpeedInsights />
       </body>
