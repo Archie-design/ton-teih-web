@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Settings,
   Zap,
@@ -24,9 +24,39 @@ import { useContactForm } from "@/lib/hooks/useContactForm";
 
 export default function App() {
   const { isSubmitting, submitStatus, handleSubmit } = useContactForm();
+  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
 
   return (
     <div className="text-slate-900">
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-[9999] bg-black/60 flex items-center justify-center cursor-zoom-out p-6"
+          onClick={() => setLightbox(null)}
+          onKeyDown={(e) => e.key === "Escape" && setLightbox(null)}
+          tabIndex={0}
+        >
+          <div
+            className="relative bg-white rounded-2xl shadow-2xl p-6 w-full max-w-2xl cursor-default"
+            style={{ aspectRatio: "4/3" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={lightbox.src}
+              alt={lightbox.alt}
+              fill
+              sizes="(max-width: 768px) 100vw, 672px"
+              className="object-contain p-4"
+            />
+            <button
+              className="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors cursor-pointer"
+              onClick={() => setLightbox(null)}
+              aria-label="關閉"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Hero Section */}
       <header className="relative pt-40 pb-24 bg-slate-900 text-white overflow-hidden">
@@ -190,13 +220,13 @@ export default function App() {
                       </ul>
                     </div>
                     {p.image && (
-                      <div className="relative bg-white p-4 rounded-2xl shadow-xl flex items-center justify-center overflow-hidden h-64 border">
+                      <div className="relative bg-white rounded-2xl shadow-xl flex items-center justify-center overflow-hidden h-80 border">
                         <Image
                           src={p.image}
                           alt={p.title}
                           fill
                           sizes="(max-width: 768px) 100vw, 50vw"
-                          className="object-contain p-4 rounded-xl hover:scale-105 transition duration-500"
+                          className="object-contain rounded-xl hover:scale-105 transition duration-500"
                         />
                       </div>
                     )}
@@ -254,6 +284,21 @@ export default function App() {
                 key={p.id}
                 className="p-8 bg-white border rounded-2xl hover:border-red-600 transition-all hover:shadow-2xl group flex flex-col"
               >
+                {p.image && (
+                  <div
+                    className="relative mb-6 rounded-xl overflow-hidden bg-slate-50 border h-52 flex items-center justify-center cursor-zoom-in"
+                    onClick={() => setLightbox({ src: p.image!, alt: p.title })}
+                  >
+                    <Image
+                      src={p.image}
+                      alt={p.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-contain p-2 hover:scale-110 transition duration-300"
+                    />
+                  </div>
+                )}
+
                 <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 mb-6 group-hover:bg-red-50 group-hover:text-red-600 transition-colors">
                   {p.id === "rsd" ? (
                     <Trash2 size={24} />
@@ -270,18 +315,6 @@ export default function App() {
                 <p className="text-sm text-slate-500 mb-6 leading-relaxed flex-grow">
                   {p.desc}
                 </p>
-
-                {p.image && (
-                  <div className="relative mb-6 rounded-xl overflow-hidden bg-slate-50 border h-40 flex items-center justify-center">
-                    <Image
-                      src={p.image}
-                      alt={p.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-contain p-2 hover:scale-110 transition duration-300"
-                    />
-                  </div>
-                )}
 
                 <div className="pt-6 border-t border-slate-100">
                   <div className="text-[10px] font-black uppercase text-slate-400 mb-4 tracking-widest">

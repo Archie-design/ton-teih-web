@@ -328,7 +328,7 @@ export const productData = {
       id: "tvs",
       title: "真空熱壓成型機系列",
       model: "TVS 系列",
-      image: "/images/products/product-6.png", // 原「產品六.png」
+      image: "/images/products/product-6-v2.png", // 原「產品六.png」
       desc: "高負壓真空罩設計，4 秒內即可完成 -650mmHg 以上之真空度。為模具提供接近完全真空環境，解決模具排氣難題。",
       features: [
         "極速真空：提高排氣性能，避免成品氣泡",
@@ -380,7 +380,7 @@ export const productData = {
       id: "rsd",
       title: "橡矽膠毛邊機",
       model: "RSD 系列",
-      image: "",
+      image: "/images/products/product-7.png",
       desc: "利用空氣動力及離心力原理。單機可抵 20-40 人手工拆邊效率，適用於密封圈等橡膠精密成型後處理。",
       features: [
         "高效產能：單機效率提升 20-40 倍",
@@ -401,7 +401,7 @@ export const productData = {
       id: "sorting",
       title: "空氣篩選與上升系統",
       model: "APM / LM 系列",
-      image: "",
+      image: "/images/products/product-8.png",
       desc: "利用空氣動力分離產品與毛屑，確保潔淨度要求。上升機實現自動輸送，大幅減少人工搬運。",
       features: [
         "風量調整：依產品比重調整風量以達到最佳分離",
@@ -418,7 +418,7 @@ export const productData = {
       id: "ras",
       title: "自動稱重切料機",
       model: "RAS 系列",
-      image: "",
+      image: "/images/products/product-9.png",
       desc: "設備具有自動稱重、補償與選別功能。採用 PLC 稱重模塊與伺服馬達驅動進給，切料穩定且精確度高。",
       features: [
         "智能選別：自動區分合格與不合格重量之料塊",
@@ -437,7 +437,7 @@ export const productData = {
       id: "rcm",
       title: "長度重量切料機",
       model: "RCM 系列",
-      image: "",
+      image: "/images/products/product-10.png",
       desc: "具備長度與重量雙切換模式。採用伺服馬達精控進料，適合橡膠片、EVA、鋁片等多種板材切割。",
       features: [
         "多模式：切割長度與重量模式可自由切換",
