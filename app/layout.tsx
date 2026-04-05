@@ -1,11 +1,8 @@
 import "./globals.css";
 import { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import LineFloatingButton from "@/components/LineFloatingButton";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -93,10 +90,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <Navbar />
         {children}
-        <Footer />
-        <LineFloatingButton />
         <Analytics />
         <SpeedInsights />
       </body>

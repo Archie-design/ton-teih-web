@@ -10,7 +10,95 @@ import {
     CheckCircle,
     Factory,
     ShieldCheck,
+    ChevronLeft,
+    ChevronRight,
 } from "lucide-react";
+
+function MachineCardImage({
+    gallery,
+    name,
+    isSold,
+    isOfficial,
+    isReserved,
+}: {
+    gallery: string[];
+    name: string;
+    isSold: boolean;
+    isOfficial: boolean;
+    isReserved: boolean;
+}) {
+    const [idx, setIdx] = useState(0);
+    const count = gallery.length;
+    const prev = (e: React.MouseEvent) => { e.stopPropagation(); setIdx((i) => (i - 1 + count) % count); };
+    const next = (e: React.MouseEvent) => { e.stopPropagation(); setIdx((i) => (i + 1) % count); };
+
+    return (
+        <div className="relative h-64 overflow-hidden bg-slate-100 flex-shrink-0">
+            <Image
+                src={gallery[idx]}
+                alt={`${name} 照片 ${idx + 1}`}
+                fill
+                sizes="(max-width: 768px) 100vw, 33vw"
+                className="object-contain transition-opacity duration-300 opacity-90"
+                priority={false}
+            />
+            {/* 水印 */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none select-none -rotate-12">
+                <span className="text-3xl font-black tracking-tighter text-black uppercase">Ton Teih Certified</span>
+            </div>
+
+            {/* 已售出遮罩 */}
+            {isSold && (
+                <div className="absolute inset-0 bg-slate-900/60 flex items-center justify-center z-10">
+                    <span className="bg-slate-900 text-white text-xs font-black px-4 py-2 rounded-sm tracking-widest uppercase shadow-xl">已售出</span>
+                </div>
+            )}
+
+            {/* 標籤 */}
+            <div className="absolute top-4 left-4 flex flex-col gap-2 z-20">
+                {isOfficial && (
+                    <span className="bg-red-600 text-white text-[10px] font-black px-2.5 py-1 rounded-sm shadow-lg flex items-center">
+                        <ShieldCheck size={12} className="mr-1" /> 官方認證
+                    </span>
+                )}
+                {isReserved && (
+                    <span className="bg-amber-500 text-white text-[10px] font-black px-2.5 py-1 rounded-sm shadow-lg">預約看機中</span>
+                )}
+            </div>
+
+            {/* 左右箭頭（多張照片才顯示） */}
+            {count > 1 && (
+                <>
+                    <button
+                        onClick={prev}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-black/40 hover:bg-black/60 text-white rounded-full p-1 transition-colors cursor-pointer"
+                        aria-label="上一張"
+                    >
+                        <ChevronLeft size={16} />
+                    </button>
+                    <button
+                        onClick={next}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-black/40 hover:bg-black/60 text-white rounded-full p-1 transition-colors cursor-pointer"
+                        aria-label="下一張"
+                    >
+                        <ChevronRight size={16} />
+                    </button>
+                    {/* 圓點指示器 */}
+                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 flex gap-1">
+                        {gallery.map((_, i) => (
+                            <button
+                                key={i}
+                                onClick={(e) => { e.stopPropagation(); setIdx(i); }}
+                                className={`w-1.5 h-1.5 rounded-full transition-colors cursor-pointer ${i === idx ? "bg-white" : "bg-white/40"}`}
+                                aria-label={`第 ${i + 1} 張`}
+                            />
+                        ))}
+                    </div>
+                </>
+            )}
+        </div>
+    );
+}
 
 interface Props {
     initialMachines: TradingItem[];
@@ -104,46 +192,13 @@ export default function UsedEquipmentClientView({ initialMachines }: Props) {
                                 key={machine.id}
                                 className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden group hover:shadow-2xl hover:border-red-600/30 transition-all flex flex-col relative w-full h-full"
                             >
-                                <div className="relative h-64 overflow-hidden bg-slate-100 flex-shrink-0">
-                                    <Image
-                                        src={machine.thumbnail}
-                                        alt={machine.name}
-                                        fill
-                                        sizes="(max-width: 768px) 100vw, 33vw"
-                                        className="object-contain group-hover:scale-105 transition-transform duration-700 opacity-90"
-                                        priority={false}
-                                    />
-                                    {/* 水印 */}
-                                    <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none select-none -rotate-12">
-                                        <span className="text-3xl font-black tracking-tighter text-black uppercase">
-                                            Ton Teih Certified
-                                        </span>
-                                    </div>
-
-                                    {/* 已售出遮罩 */}
-                                    {(machine.tradingStatus === "sold" || machine.tradingStatus === "已售出") && (
-                                        <div className="absolute inset-0 bg-slate-900/60 flex items-center justify-center z-10">
-                                            <span className="bg-slate-900 text-white text-xs font-black px-4 py-2 rounded-sm tracking-widest uppercase shadow-xl">
-                                                已售出
-                                            </span>
-                                        </div>
-                                    )}
-
-                                    {/* 標籤 */}
-                                    <div className="absolute top-4 left-4 flex flex-col gap-2 z-20">
-                                        {machine.isOfficial && (
-                                            <span className="bg-red-600 text-white text-[10px] font-black px-2.5 py-1 rounded-sm shadow-lg flex items-center">
-                                                <ShieldCheck size={12} className="mr-1" /> 官方認證
-                                            </span>
-                                        )}
-                                        {(machine.tradingStatus === "reserved" ||
-                                            machine.tradingStatus === "預約看機") && (
-                                                <span className="bg-amber-500 text-white text-[10px] font-black px-2.5 py-1 rounded-sm shadow-lg">
-                                                    預約看機中
-                                                </span>
-                                            )}
-                                    </div>
-                                </div>
+                                <MachineCardImage
+                                    gallery={[...new Set([machine.thumbnail, ...(machine.gallery ?? [])].filter(Boolean))]}
+                                    name={machine.name}
+                                    isSold={machine.tradingStatus === "sold" || machine.tradingStatus === "已售出"}
+                                    isOfficial={!!machine.isOfficial}
+                                    isReserved={machine.tradingStatus === "reserved" || machine.tradingStatus === "預約看機"}
+                                />
 
                                 <div className="p-6 flex flex-col flex-1 relative z-10 bg-white">
                                     <div className="flex justify-between items-start mb-2">

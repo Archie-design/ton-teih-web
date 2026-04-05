@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, MessageSquare, Truck, Factory, Plus, LogOut } from "lucide-react";
+import { LayoutDashboard, MessageSquare, Truck, Factory, Plus, LogOut, ChevronLeft } from "lucide-react";
 
 const NAV_ITEMS = [
   { href: "/admin/dashboard", label: "概覽", icon: LayoutDashboard },
@@ -15,6 +15,7 @@ const NAV_ITEMS = [
 export default function AdminNav() {
   const pathname = usePathname();
   const router = useRouter();
+  const isDashboard = pathname === "/admin/dashboard";
 
   const handleLogout = async () => {
     await fetch("/api/admin/login", { method: "DELETE" });
@@ -25,12 +26,17 @@ export default function AdminNav() {
     <nav className="bg-slate-900 border-b border-slate-700 sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-14">
         <div className="flex items-center gap-1 overflow-x-auto">
-          <Link
-            href="/admin/dashboard"
-            className="text-xs font-black text-red-500 uppercase tracking-widest mr-4 whitespace-nowrap hover:text-red-400 transition-colors cursor-pointer"
-          >
-            ← 管理後台
-          </Link>
+          {/* 非 Dashboard 頁面顯示返回按鈕 */}
+          {!isDashboard && (
+            <Link
+              href="/admin/dashboard"
+              className="flex items-center gap-1 px-3 py-1.5 mr-2 rounded-lg text-xs font-bold text-white bg-slate-700 hover:bg-slate-600 transition-colors whitespace-nowrap cursor-pointer shrink-0"
+            >
+              <ChevronLeft size={14} />
+              概覽
+            </Link>
+          )}
+
           {NAV_ITEMS.map(({ href, label, icon: Icon }) => (
             <Link
               key={href}
@@ -48,7 +54,7 @@ export default function AdminNav() {
         </div>
         <button
           onClick={handleLogout}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-700 transition-colors cursor-pointer"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-700 transition-colors cursor-pointer shrink-0"
         >
           <LogOut size={13} />
           登出
