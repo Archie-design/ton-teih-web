@@ -1,4 +1,4 @@
-import { getMachineById, getUsedEquipments } from "@/lib/api/firestore";
+import { getMachineById, getUsedEquipments } from "@/lib/api/db";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import MachineDetailClient from "./MachineDetailClient";

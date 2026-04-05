@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/firebase/admin";
+import { getDb } from "@/lib/db/neon";
+import { machines } from "@/lib/db/schema";
+import { desc } from "drizzle-orm";
 
 function verifyAdmin(request: NextRequest) {
   const session = request.cookies.get("admin_session")?.value;
@@ -12,20 +14,15 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const db = getDb();
-    const snapshot = await db
-      .collection("machines")
-      .orderBy("createdAt", "desc")
-      .get();
+    const rows = await getDb()
+      .select()
+      .from(machines)
+      .orderBy(desc(machines.createdAt));
 
-    const data = snapshot.docs.map((doc) => {
-      const d = doc.data();
-      return {
-        id: doc.id,
-        ...d, // 包含 costPrice（內部底價），僅供後台
-        createdAt: d.createdAt?.toDate?.()?.toISOString() ?? null,
-      };
-    });
+    const data = rows.map((r) => ({
+      ...r,
+      createdAt: r.createdAt.toISOString(),
+    }));
 
     return NextResponse.json({ success: true, data });
   } catch (error) {

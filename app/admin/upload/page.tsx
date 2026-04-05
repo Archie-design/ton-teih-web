@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { uploadUsedEquipment } from "@/lib/api/firestore";
+import { uploadUsedEquipment } from "@/lib/api/db";
 import { Factory, Settings } from "lucide-react";
 import AdminNav from "@/components/AdminNav";
 

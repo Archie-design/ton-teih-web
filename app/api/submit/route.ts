@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { getDb } from "@/lib/firebase/admin";
+import { getDb } from "@/lib/db/neon";
+import { inquiries, sellerRequests } from "@/lib/db/schema";
 
 // ─── Email 通知（Resend REST API，選填）────────────────────────────────────────
 async function sendNotification(subject: string, html: string) {
@@ -47,10 +48,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const db = getDb();
-
     if (data.type === "seller_request") {
-      await db.collection("sellerRequests").add({
+      await getDb().insert(sellerRequests).values({
         name: data.name || "",
         phone: data.phone || "",
         email: data.email || "",
@@ -63,7 +62,6 @@ export async function POST(request: Request) {
         machineCondition: data.machineCondition || "",
         status: "待聯繫",
         adminNote: "",
-        createdAt: new Date(),
       });
 
       await sendNotification(
@@ -74,7 +72,7 @@ export async function POST(request: Request) {
     }
 
     // 一般詢價 / 聯絡表單
-    await db.collection("inquiries").add({
+    await getDb().insert(inquiries).values({
       name: data.name || "",
       phone: data.phone || "",
       email: data.email || "",
@@ -83,7 +81,6 @@ export async function POST(request: Request) {
       message: data.message || "",
       status: "待回覆",
       adminNote: "",
-      createdAt: new Date(),
     });
 
     await sendNotification(

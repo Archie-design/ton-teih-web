@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/firebase/admin";
+import { getDb } from "@/lib/db/neon";
+import { sellerRequests } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
 
 function verifyAdmin(request: NextRequest) {
   const session = request.cookies.get("admin_session")?.value;
@@ -17,11 +19,11 @@ export async function PATCH(
   const { id } = await params;
   try {
     const body = await request.json();
-    const update: Record<string, string> = {};
-    if (body.status !== undefined) update.status = body.status;
-    if (body.adminNote !== undefined) update.adminNote = body.adminNote;
+    const patch: Partial<typeof sellerRequests.$inferInsert> = {};
+    if (body.status !== undefined) patch.status = body.status;
+    if (body.adminNote !== undefined) patch.adminNote = body.adminNote;
 
-    await getDb().collection("sellerRequests").doc(id).update(update);
+    await getDb().update(sellerRequests).set(patch).where(eq(sellerRequests.id, id));
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error(`PATCH /api/admin/seller-requests/${id} error:`, error);

@@ -1,4 +1,4 @@
-import { getUsedEquipments } from "@/lib/api/firestore";
+import { getUsedEquipments } from "@/lib/api/db";
 import { EyeOff, ShieldCheck } from "lucide-react";
 import UsedEquipmentClientView from "./ClientView";
 import SubscribeForm from "@/components/SubscribeForm";

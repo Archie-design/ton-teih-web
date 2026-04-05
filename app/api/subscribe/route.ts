@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { addSubscriber } from "@/lib/api/firestore";
+import { addSubscriber } from "@/lib/api/db";
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);

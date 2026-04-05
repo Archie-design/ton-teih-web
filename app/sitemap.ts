@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { getUsedEquipments } from "@/lib/api/firestore";
+import { getUsedEquipments } from "@/lib/api/db";
 
 const baseUrl = "https://www.tonteih.com";
 

@@ -1,4 +1,6 @@
-import { getDb } from "@/lib/firebase/admin";
+import { getDb } from "@/lib/db/neon";
+import { machines, inquiries as inquiriesTable, sellerRequests } from "@/lib/db/schema";
+import { eq, ne, count } from "drizzle-orm";
 import AdminNav from "@/components/AdminNav";
 
 export const dynamic = "force-dynamic";
@@ -8,15 +10,15 @@ import Link from "next/link";
 async function getStats() {
   try {
     const db = getDb();
-    const [inquiries, sellerReqs, machines] = await Promise.all([
-      db.collection("inquiries").where("status", "==", "待回覆").get(),
-      db.collection("sellerRequests").where("status", "==", "待聯繫").get(),
-      db.collection("machines").get(),
+    const [pendingInq, pendingReqs, activeMach] = await Promise.all([
+      db.select({ count: count() }).from(inquiriesTable).where(eq(inquiriesTable.status, "待回覆")),
+      db.select({ count: count() }).from(sellerRequests).where(eq(sellerRequests.status, "待聯繫")),
+      db.select({ count: count() }).from(machines).where(ne(machines.isActive, false)),
     ]);
     return {
-      pendingInquiries: inquiries.size,
-      pendingSellerRequests: sellerReqs.size,
-      activeMachines: machines.docs.filter((d) => d.data().isActive !== false).length,
+      pendingInquiries: pendingInq[0]?.count ?? 0,
+      pendingSellerRequests: pendingReqs[0]?.count ?? 0,
+      activeMachines: activeMach[0]?.count ?? 0,
     };
   } catch {
     return { pendingInquiries: 0, pendingSellerRequests: 0, activeMachines: 0 };
