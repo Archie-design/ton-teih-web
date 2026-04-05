@@ -122,7 +122,10 @@ export default function App() {
                       ))}
                     </div>
                   </div>
-                  <div className="order-1 lg:order-2 relative group overflow-hidden rounded-2xl border bg-slate-100 min-h-[300px] md:min-h-[400px] flex items-center justify-center shadow-inner">
+                  <div
+                    className="order-1 lg:order-2 relative group overflow-hidden rounded-2xl border bg-slate-100 min-h-[300px] md:min-h-[400px] flex items-center justify-center shadow-inner cursor-zoom-in"
+                    onClick={() => p.image && setLightbox({ src: p.image, alt: p.title })}
+                  >
                     {p.image ? (
                       <Image
                         src={p.image}
@@ -220,7 +223,10 @@ export default function App() {
                       </ul>
                     </div>
                     {p.image && (
-                      <div className="relative bg-white rounded-2xl shadow-xl flex items-center justify-center overflow-hidden h-80 border">
+                      <div
+                        className="relative bg-white rounded-2xl shadow-xl flex items-center justify-center overflow-hidden h-80 border cursor-zoom-in"
+                        onClick={() => setLightbox({ src: p.image!, alt: p.title })}
+                      >
                         <Image
                           src={p.image}
                           alt={p.title}
