@@ -79,6 +79,22 @@ export default async function MachineDetailPage({ params }: Props) {
 
       <RelatedMachines machines={relatedMachines} />
 
+      {/* JSON-LD BreadcrumbList */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "首頁", item: "https://www.tonteih.com" },
+              { "@type": "ListItem", position: 2, name: "認證中古設備", item: "https://www.tonteih.com/used-equipment" },
+              { "@type": "ListItem", position: 3, name: machine.name, item: `https://www.tonteih.com/used-equipment/${id}` },
+            ],
+          }),
+        }}
+      />
+
       {/* JSON-LD Product 結構化資料 */}
       <script
         type="application/ld+json"

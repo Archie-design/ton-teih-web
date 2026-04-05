@@ -9,9 +9,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: baseUrl, lastModified: new Date(), changeFrequency: "monthly", priority: 1.0 },
     { url: `${baseUrl}/used-equipment`, lastModified: new Date(), changeFrequency: "daily", priority: 0.8 },
     { url: `${baseUrl}/trade-in`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
+    { url: `${baseUrl}/faq`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
   ];
 
-  // 動態機台詳情頁（從 Firestore 讀取）
+  // 動態機台詳情頁（從 Neon PostgreSQL 讀取）
   let machineRoutes: MetadataRoute.Sitemap = [];
   try {
     const machines = await getUsedEquipments();

@@ -54,12 +54,19 @@ export const metadata: Metadata = {
 // JSON-LD 結構化資料 (AEO/GEO 的核心，讓 AI 搜尋引擎理解實體)
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": ["LocalBusiness", "Organization"],
+  "@id": "https://www.tonteih.com/#organization",
   name: "東鐵工程有限公司 (TON TEIH)",
   url: "https://www.tonteih.com",
   logo: "https://www.tonteih.com/images/logo.png",
   description:
     "專業橡矽膠成型機制設備製造與供應商，提供FIFO射出機、臥式/立式射出機及熱壓真空機。",
+  priceRange: "$$",
+  sameAs: [
+    // 請替換為實際連結
+    "https://www.facebook.com/tonteih",
+    "https://lin.ee/tonteih",
+  ],
   contactPoint: {
     "@type": "ContactPoint",
     telephone: "+886-973-357-788",
