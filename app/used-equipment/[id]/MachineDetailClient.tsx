@@ -30,7 +30,7 @@ export default function MachineDetailClient({ machine, isSold = false }: Props) 
               alt={machine.name}
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
+              className="object-contain"
               priority
             />
             <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none select-none -rotate-12">

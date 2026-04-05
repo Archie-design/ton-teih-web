@@ -1,5 +1,6 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { getDb } from "@/lib/db/neon";
 import { machines, subscribers } from "@/lib/db/schema";
 import { desc, ne, eq } from "drizzle-orm";
@@ -95,6 +96,11 @@ export async function getMachineById(id: string): Promise<TradingItem | null> {
 }
 
 export async function uploadUsedEquipment(payload: Record<string, unknown>) {
+  const cookieStore = await cookies();
+  if (cookieStore.get("admin_session")?.value !== process.env.ADMIN_PASSWORD) {
+    throw new Error("Unauthorized");
+  }
+
   try {
     const thumbnail = convertDriveUrl(String(payload.thumbnail || ""));
     const specsRaw = payload.specs;

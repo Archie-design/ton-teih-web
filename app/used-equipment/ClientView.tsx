@@ -104,13 +104,13 @@ export default function UsedEquipmentClientView({ initialMachines }: Props) {
                                 key={machine.id}
                                 className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden group hover:shadow-2xl hover:border-red-600/30 transition-all flex flex-col relative w-full h-full"
                             >
-                                <div className="relative h-60 overflow-hidden bg-slate-100 flex-shrink-0">
+                                <div className="relative h-64 overflow-hidden bg-slate-100 flex-shrink-0">
                                     <Image
                                         src={machine.thumbnail}
                                         alt={machine.name}
                                         fill
                                         sizes="(max-width: 768px) 100vw, 33vw"
-                                        className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-90"
+                                        className="object-contain group-hover:scale-105 transition-transform duration-700 opacity-90"
                                         priority={false}
                                     />
                                     {/* 水印 */}

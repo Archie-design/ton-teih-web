@@ -2,27 +2,30 @@ import { NextRequest, NextResponse } from "next/server";
 
 const ADMIN_COOKIE = "admin_session";
 
+// 不需驗證的路徑
+const PUBLIC_PATHS = ["/admin/login", "/api/admin/login", "/api/admin/verify"];
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 登入頁和登入 API 直接放行
-  if (
-    pathname === "/admin/login" ||
-    pathname.startsWith("/api/admin/login")
-  ) {
+  if (PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(p))) {
     return NextResponse.next();
   }
 
-  if (pathname.startsWith("/admin")) {
-    const session = request.cookies.get(ADMIN_COOKIE)?.value;
-    if (!session || session !== process.env.ADMIN_PASSWORD) {
-      return NextResponse.redirect(new URL("/admin/login", request.url));
+  const session = request.cookies.get(ADMIN_COOKIE)?.value;
+  const isAuthed = session && session === process.env.ADMIN_PASSWORD;
+
+  if (!isAuthed) {
+    // API 路徑回傳 JSON 401，頁面路徑重導向登入頁
+    if (pathname.startsWith("/api/")) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+    return NextResponse.redirect(new URL("/admin/login", request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/api/admin/:path*"],
 };

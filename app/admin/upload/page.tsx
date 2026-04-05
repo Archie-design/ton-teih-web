@@ -39,7 +39,7 @@ export default function AdminUploadPage() {
     const res = await uploadUsedEquipment(payload as Record<string, unknown>);
 
     if (res.success) {
-      setStatus({ type: "success", msg: "機台資料已成功新增至 Firebase！" });
+      setStatus({ type: "success", msg: "機台資料已成功上架至平台！" });
       form.reset();
     } else {
       setStatus({ type: "error", msg: `上架失敗: ${res.error}` });
