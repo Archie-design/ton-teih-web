@@ -1,15 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { uploadUsedEquipment } from "@/lib/api/db";
-import { Factory, Settings } from "lucide-react";
+import { Factory, Settings, Plus, X } from "lucide-react";
 import AdminNav from "@/components/AdminNav";
 
 export default function AdminUploadPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState({ type: "", msg: "" });
+  const [galleryUrls, setGalleryUrls] = useState<string[]>([]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const addGalleryUrl = () => setGalleryUrls((prev) => [...prev, ""]);
+  const removeGalleryUrl = (i: number) =>
+    setGalleryUrls((prev) => prev.filter((_, idx) => idx !== i));
+  const updateGalleryUrl = (i: number, val: string) =>
+    setGalleryUrls((prev) => prev.map((u, idx) => (idx === i ? val : u)));
+
+  const handleSubmit = async (e: { currentTarget: HTMLFormElement; preventDefault(): void }) => {
     e.preventDefault();
     setIsLoading(true);
     setStatus({ type: "", msg: "" });
@@ -32,6 +39,7 @@ export default function AdminUploadPage() {
       isOfficial: formData.get("isOfficial") === "on",
       inspectionScore: parseInt(formData.get("inspectionScore") as string) || 85,
       thumbnail: formData.get("thumbnail"),
+      gallery: galleryUrls.filter((u) => u.trim()),
       tradingStatus: "待售",
       specs: {},
     };
@@ -41,12 +49,15 @@ export default function AdminUploadPage() {
     if (res.success) {
       setStatus({ type: "success", msg: "機台資料已成功上架至平台！" });
       form.reset();
+      setGalleryUrls([]);
     } else {
       setStatus({ type: "error", msg: `上架失敗: ${res.error}` });
     }
 
     setIsLoading(false);
   };
+
+  const inputCls = "w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 focus:border-red-600 outline-none placeholder-slate-500";
 
   return (
     <div className="min-h-screen bg-slate-900">
@@ -59,33 +70,16 @@ export default function AdminUploadPage() {
           </h1>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="bg-slate-800 rounded-3xl border border-slate-700 p-8"
-        >
+        <form onSubmit={handleSubmit} className="bg-slate-800 rounded-3xl border border-slate-700 p-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div className="md:col-span-2">
-              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">
-                機台顯示名稱
-              </label>
-              <input
-                name="name"
-                type="text"
-                required
-                placeholder="如：東鐵認證：FIFO 橡膠射出成型機 (250T)"
-                className="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 focus:border-red-600 outline-none placeholder-slate-500"
-              />
+              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">機台顯示名稱</label>
+              <input name="name" type="text" required placeholder="如：東鐵認證：FIFO 橡膠射出成型機 (250T)" className={inputCls} />
             </div>
 
             <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">
-                機台分類
-              </label>
-              <select
-                name="category"
-                required
-                className="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none cursor-pointer"
-              >
+              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">機台分類</label>
+              <select name="category" required className="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none cursor-pointer">
                 <option value="LSR 射出成型機">LSR 射出成型機</option>
                 <option value="真空熱壓成型機">真空熱壓成型機</option>
                 <option value="一般平板熱壓機">一般平板熱壓機</option>
@@ -94,170 +88,115 @@ export default function AdminUploadPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">
-                所在地點 (去識別化)
-              </label>
-              <input
-                name="location"
-                type="text"
-                required
-                placeholder="如：台中工業區、桃園廠區"
-                className="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none placeholder-slate-500"
-              />
+              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">所在地點 (去識別化)</label>
+              <input name="location" type="text" required placeholder="如：台中工業區、桃園廠區" className={inputCls} />
             </div>
 
             <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">
-                品牌
-              </label>
-              <input
-                name="brand"
-                type="text"
-                required
-                placeholder="如：Ton Teih"
-                defaultValue="Ton Teih"
-                className="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none placeholder-slate-500"
-              />
+              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">品牌</label>
+              <input name="brand" type="text" required defaultValue="Ton Teih" className={inputCls} />
             </div>
 
             <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">
-                機型 (Model)
-              </label>
-              <input
-                name="model"
-                type="text"
-                required
-                placeholder="如：TT-FIFO-250"
-                className="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none placeholder-slate-500"
-              />
+              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">機型 (Model)</label>
+              <input name="model" type="text" required placeholder="如：TT-FIFO-250" className={inputCls} />
             </div>
 
             <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">
-                出廠年份
-              </label>
-              <input
-                name="year"
-                type="number"
-                required
-                defaultValue={new Date().getFullYear()}
-                className="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none"
-              />
+              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">出廠年份</label>
+              <input name="year" type="number" required defaultValue={new Date().getFullYear()} className={inputCls} />
             </div>
 
             <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">
-                使用時數 (小時)
-              </label>
-              <input
-                name="hoursUsed"
-                type="number"
-                placeholder="選填"
-                className="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none placeholder-slate-500"
-              />
+              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">使用時數 (小時)</label>
+              <input name="hoursUsed" type="number" placeholder="選填" className={inputCls} />
             </div>
 
             <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">
-                參考售價 (TWD) — 對外公開
-              </label>
-              <input
-                name="price"
-                type="number"
-                required
-                className="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none"
-              />
+              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">參考售價 (TWD) — 對外公開</label>
+              <input name="price" type="number" required className={inputCls} />
             </div>
 
             <div>
-              <label className="block text-xs font-black uppercase text-red-400 tracking-widest mb-2">
-                內部底價 (TWD) — 僅業務可見
-              </label>
-              <input
-                name="costPrice"
-                type="number"
-                required
-                className="w-full bg-red-950/40 border border-red-800/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none"
-              />
+              <label className="block text-xs font-black uppercase text-red-400 tracking-widest mb-2">內部底價 (TWD) — 僅業務可見</label>
+              <input name="costPrice" type="number" required className="w-full bg-red-950/40 border border-red-800/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none" />
             </div>
 
             <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">
-                控制器品牌/型號
-              </label>
-              <input
-                name="controller"
-                type="text"
-                placeholder="如：東鐵 V5.2"
-                className="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none placeholder-slate-500"
-              />
+              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">控制器品牌/型號</label>
+              <input name="controller" type="text" placeholder="如：東鐵 V5.2" className={inputCls} />
             </div>
 
             <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">
-                油壓系統品牌
-              </label>
-              <input
-                name="pumpSystem"
-                type="text"
-                placeholder="如：Yuken"
-                className="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none placeholder-slate-500"
-              />
+              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">油壓系統品牌</label>
+              <input name="pumpSystem" type="text" placeholder="如：Yuken" className={inputCls} />
             </div>
 
             <div>
-              <label className="block text-xs font-black uppercase text-red-400 tracking-widest mb-2">
-                技術評分 (0-100)
-              </label>
-              <input
-                name="inspectionScore"
-                type="number"
-                min="0"
-                max="100"
-                defaultValue="85"
-                required
-                className="w-full bg-red-950/40 border border-red-800/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none"
-              />
+              <label className="block text-xs font-black uppercase text-red-400 tracking-widest mb-2">技術評分 (0-100)</label>
+              <input name="inspectionScore" type="number" min="0" max="100" defaultValue="85" required className="w-full bg-red-950/40 border border-red-800/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none" />
             </div>
 
+            {/* 主縮圖 */}
             <div className="md:col-span-2">
-              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">
-                廠房實機縮圖 (URL)
-              </label>
-              <input
-                name="thumbnail"
-                type="text"
-                required
-                placeholder="https://drive.google.com/file/d/FILE_ID/view 或其他圖片網址"
-                className="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none placeholder-slate-500"
-              />
+              <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">主縮圖 (URL)</label>
+              <input name="thumbnail" type="text" required placeholder="https://drive.google.com/file/d/FILE_ID/view 或其他圖片網址" className={inputCls} />
               <p className="text-[10px] text-slate-500 mt-2">
-                支援 Google 雲端硬碟分享連結（系統自動轉換）或任意 HTTPS 圖片網址。
-                雲端硬碟需設定「知道連結的所有人可查看」。
+                支援 Google 雲端硬碟分享連結（系統自動轉換）或任意 HTTPS 圖片網址。雲端硬碟需設定「知道連結的所有人可查看」。
               </p>
+            </div>
+
+            {/* 附加照片 Gallery */}
+            <div className="md:col-span-2">
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-xs font-black uppercase tracking-widest text-slate-400">
+                  附加照片（選填，可多張）
+                </label>
+                <button
+                  type="button"
+                  onClick={addGalleryUrl}
+                  className="flex items-center gap-1 text-xs text-red-400 hover:text-red-300 transition cursor-pointer font-bold"
+                >
+                  <Plus size={13} /> 新增照片
+                </button>
+              </div>
+              {galleryUrls.length === 0 && (
+                <p className="text-xs text-slate-600 italic">點擊「新增照片」可加入更多圖片網址</p>
+              )}
+              <div className="space-y-2">
+                {galleryUrls.map((url, i) => (
+                  <div key={i} className="flex gap-2">
+                    <input
+                      type="text"
+                      value={url}
+                      onChange={(e) => updateGalleryUrl(i, e.target.value)}
+                      placeholder={`照片 ${i + 1} 網址`}
+                      className="flex-1 bg-slate-700 border border-slate-600 text-white rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-red-600 outline-none placeholder-slate-500"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeGalleryUrl(i)}
+                      className="p-2.5 text-slate-500 hover:text-red-400 transition cursor-pointer rounded-xl hover:bg-slate-700"
+                    >
+                      <X size={15} />
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
+          {/* 官方認證 toggle */}
           <div className="p-5 bg-slate-700/50 rounded-2xl mb-8 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Settings className="text-slate-400" size={20} />
               <div>
-                <h4 className="font-bold text-white text-sm">
-                  設定為東鐵官方認證 (Ton Teih Certified)
-                </h4>
-                <p className="text-xs text-slate-400 mt-0.5">
-                  此機台是否已經過官方全面安檢與核心零件換新？
-                </p>
+                <h4 className="font-bold text-white text-sm">設定為東鐵官方認證 (Ton Teih Certified)</h4>
+                <p className="text-xs text-slate-400 mt-0.5">此機台是否已經過官方全面安檢與核心零件換新？</p>
               </div>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                name="isOfficial"
-                className="sr-only peer"
-                defaultChecked
-              />
+              <input type="checkbox" name="isOfficial" className="sr-only peer" defaultChecked />
               <div className="w-11 h-6 bg-slate-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
             </label>
           </div>
@@ -271,13 +210,7 @@ export default function AdminUploadPage() {
           </button>
 
           {status.msg && (
-            <div
-              className={`mt-6 p-4 rounded-xl font-bold text-center text-sm ${
-                status.type === "success"
-                  ? "bg-green-900/30 text-green-400 border border-green-800/50"
-                  : "bg-red-900/30 text-red-400 border border-red-800/50"
-              }`}
-            >
+            <div className={`mt-6 p-4 rounded-xl font-bold text-center text-sm ${status.type === "success" ? "bg-green-900/30 text-green-400 border border-green-800/50" : "bg-red-900/30 text-red-400 border border-red-800/50"}`}>
               {status.msg}
             </div>
           )}

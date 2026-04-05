@@ -103,6 +103,8 @@ export async function uploadUsedEquipment(payload: Record<string, unknown>) {
 
   try {
     const thumbnail = convertDriveUrl(String(payload.thumbnail || ""));
+    const galleryRaw = Array.isArray(payload.gallery) ? payload.gallery as string[] : [];
+    const gallery = galleryRaw.map((u) => convertDriveUrl(u)).filter(Boolean);
     const specsRaw = payload.specs;
     const specs: Record<string, string> =
       typeof specsRaw === "string"
@@ -126,6 +128,7 @@ export async function uploadUsedEquipment(payload: Record<string, unknown>) {
         isOfficial: payload.isOfficial === true || payload.isOfficial === "true",
         inspectionScore: Number(payload.inspectionScore) || 0,
         thumbnail,
+        gallery,
         tradingStatus: String(payload.tradingStatus || "待售"),
         specs,
         isActive: true,

@@ -8,6 +8,12 @@ function verifyAdmin(request: NextRequest) {
   return session === process.env.ADMIN_PASSWORD;
 }
 
+function convertDriveUrl(url: string): string {
+  const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (match) return `https://lh3.googleusercontent.com/d/${match[1]}`;
+  return url;
+}
+
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -20,8 +26,30 @@ export async function PATCH(
   try {
     const body = await request.json();
     const patch: Partial<typeof machines.$inferInsert> = {};
+
+    // 狀態欄位
     if (body.tradingStatus !== undefined) patch.tradingStatus = body.tradingStatus;
     if (body.isActive !== undefined) patch.isActive = body.isActive;
+
+    // 內容欄位（編輯用）
+    if (body.name !== undefined) patch.name = body.name;
+    if (body.brand !== undefined) patch.brand = body.brand;
+    if (body.model !== undefined) patch.model = body.model;
+    if (body.year !== undefined) patch.year = Number(body.year);
+    if (body.category !== undefined) patch.category = body.category;
+    if (body.location !== undefined) patch.location = body.location;
+    if (body.price !== undefined) patch.price = Number(body.price);
+    if (body.costPrice !== undefined) patch.costPrice = Number(body.costPrice);
+    if (body.hoursUsed !== undefined) patch.hoursUsed = Number(body.hoursUsed);
+    if (body.controller !== undefined) patch.controller = body.controller;
+    if (body.pumpSystem !== undefined) patch.pumpSystem = body.pumpSystem;
+    if (body.isOfficial !== undefined) patch.isOfficial = Boolean(body.isOfficial);
+    if (body.inspectionScore !== undefined) patch.inspectionScore = Number(body.inspectionScore);
+    if (body.thumbnail !== undefined) patch.thumbnail = convertDriveUrl(String(body.thumbnail));
+    if (body.gallery !== undefined) {
+      patch.gallery = (body.gallery as string[]).map((u) => convertDriveUrl(u)).filter(Boolean);
+    }
+    if (body.specs !== undefined) patch.specs = body.specs;
 
     await getDb().update(machines).set(patch).where(eq(machines.id, id));
     return NextResponse.json({ success: true });

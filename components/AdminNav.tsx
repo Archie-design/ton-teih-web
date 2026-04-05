@@ -25,9 +25,12 @@ export default function AdminNav() {
     <nav className="bg-slate-900 border-b border-slate-700 sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-14">
         <div className="flex items-center gap-1 overflow-x-auto">
-          <span className="text-xs font-black text-red-500 uppercase tracking-widest mr-4 whitespace-nowrap">
-            管理後台
-          </span>
+          <Link
+            href="/admin/dashboard"
+            className="text-xs font-black text-red-500 uppercase tracking-widest mr-4 whitespace-nowrap hover:text-red-400 transition-colors cursor-pointer"
+          >
+            ← 管理後台
+          </Link>
           {NAV_ITEMS.map(({ href, label, icon: Icon }) => (
             <Link
               key={href}
