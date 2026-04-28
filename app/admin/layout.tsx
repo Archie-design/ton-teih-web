@@ -1,7 +1,4 @@
 import { Metadata } from "next";
-import { cookies, headers } from "next/headers";
-import { redirect } from "next/navigation";
-import { verifySessionToken } from "@/lib/auth";
 
 export const metadata: Metadata = {
   robots: {
@@ -10,23 +7,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function AdminLayout({
+export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const headersList = await headers();
-  const pathname = headersList.get("x-pathname") ?? "";
-
-  // 登入頁不需要驗證
-  if (!pathname.startsWith("/admin/login")) {
-    const cookieStore = await cookies();
-    const session = cookieStore.get("admin_session")?.value;
-    const secret = process.env.ADMIN_PASSWORD;
-    if (!session || !secret || !await verifySessionToken(session, secret)) {
-      redirect("/admin/login");
-    }
-  }
-
+  // 認證由 middleware.ts 統一處理（matcher: /admin/:path*）
   return <>{children}</>;
 }
