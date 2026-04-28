@@ -1,9 +1,3 @@
-/**
- * 重要：請在此處填入您在 Google Apps Script 部署後取得的 Web App URL
- */
-export const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbwiYdDfk9YwjeauV1iuPXTs4i4sMC5GkR0HtbsORUAhWmo86BOQo6O8wtus5aiMVDWc/exec";
-
 // LINE 聯絡資訊（待確認正確 ID 後更新）
 export const LINE_ID = "h0973357788";
 

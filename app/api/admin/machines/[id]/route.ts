@@ -2,23 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/db/neon";
 import { machines } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
-
-function verifyAdmin(request: NextRequest) {
-  const session = request.cookies.get("admin_session")?.value;
-  return session === process.env.ADMIN_PASSWORD;
-}
-
-function convertDriveUrl(url: string): string {
-  const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-  if (match) return `https://lh3.googleusercontent.com/d/${match[1]}`;
-  return url;
-}
+import { verifyAdmin } from "@/lib/auth";
+import { convertDriveUrl } from "@/lib/utils/drive";
 
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  if (!verifyAdmin(request)) {
+  if (!await verifyAdmin(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

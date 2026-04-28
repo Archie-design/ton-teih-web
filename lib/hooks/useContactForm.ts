@@ -29,7 +29,14 @@ export function useContactForm(opts?: { onSuccess?: () => void }) {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data),
             });
-            if (!res.ok) throw new Error("Submission failed");
+            const body = await res.json().catch(() => ({}));
+            if (!res.ok || body.success === false) {
+                setSubmitStatus({
+                    type: "error",
+                    msg: body.message || "發送失敗，請稍後再試。",
+                });
+                return;
+            }
 
             setSubmitStatus({
                 type: "success",

@@ -9,7 +9,7 @@ export async function POST(request: Request) {
   try {
     const { email } = await request.json();
 
-    if (!email || !isValidEmail(email)) {
+    if (!email || typeof email !== "string" || email.length > 254 || !isValidEmail(email)) {
       return NextResponse.json({ error: "請輸入有效的電子郵件" }, { status: 400 });
     }
 

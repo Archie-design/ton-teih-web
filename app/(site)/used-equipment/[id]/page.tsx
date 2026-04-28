@@ -1,4 +1,4 @@
-import { getMachineById, getUsedEquipments } from "@/lib/api/db";
+import { getMachineById, getRelatedMachines, getUsedEquipments } from "@/lib/api/db";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import MachineDetailClient from "./MachineDetailClient";
@@ -38,18 +38,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function MachineDetailPage({ params }: Props) {
   const { id } = await params;
-  const [machine, allMachines] = await Promise.all([
-    getMachineById(id),
-    getUsedEquipments(),
-  ]);
+  const machine = await getMachineById(id);
 
   if (!machine) {
     notFound();
   }
 
-  const relatedMachines = allMachines
-    .filter((m) => m.id !== id && m.category === machine.category)
-    .slice(0, 3);
+  const relatedMachines = await getRelatedMachines(id, machine.category);
 
   return (
     <div className="bg-slate-50 min-h-screen pt-20">

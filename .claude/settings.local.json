@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node --env-file=.env.local scripts/migrate-firestore-to-neon.mjs)"
+      "Bash(node --env-file=.env.local scripts/migrate-firestore-to-neon.mjs)",
+      "Bash(npm run *)",
+      "Bash(npx drizzle-kit *)"
     ]
   }
 }

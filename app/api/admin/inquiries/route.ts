@@ -2,22 +2,24 @@ import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/db/neon";
 import { inquiries } from "@/lib/db/schema";
 import { desc } from "drizzle-orm";
-
-function verifyAdmin(request: NextRequest) {
-  const session = request.cookies.get("admin_session")?.value;
-  return session === process.env.ADMIN_PASSWORD;
-}
+import { verifyAdmin } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {
-  if (!verifyAdmin(request)) {
+  if (!await verifyAdmin(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
+  const { searchParams } = request.nextUrl;
+  const page = Math.max(0, Number(searchParams.get("page") ?? 0));
+  const limit = Math.min(200, Math.max(1, Number(searchParams.get("limit") ?? 100)));
 
   try {
     const rows = await getDb()
       .select()
       .from(inquiries)
-      .orderBy(desc(inquiries.createdAt));
+      .orderBy(desc(inquiries.createdAt))
+      .limit(limit)
+      .offset(page * limit);
 
     const data = rows.map((r) => ({
       ...r,

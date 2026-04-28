@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { verifySessionToken } from "@/lib/auth";
 
 export const metadata: Metadata = {
   robots: {
@@ -21,7 +22,8 @@ export default async function AdminLayout({
   if (!pathname.startsWith("/admin/login")) {
     const cookieStore = await cookies();
     const session = cookieStore.get("admin_session")?.value;
-    if (!session || session !== process.env.ADMIN_PASSWORD) {
+    const secret = process.env.ADMIN_PASSWORD;
+    if (!session || !secret || !await verifySessionToken(session, secret)) {
       redirect("/admin/login");
     }
   }

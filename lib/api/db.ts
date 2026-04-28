@@ -3,7 +3,9 @@
 import { cookies } from "next/headers";
 import { getDb } from "@/lib/db/neon";
 import { machines, subscribers } from "@/lib/db/schema";
-import { desc, ne, eq } from "drizzle-orm";
+import { desc, ne, eq, and } from "drizzle-orm";
+import { verifySessionToken } from "@/lib/auth";
+import { convertDriveUrl } from "@/lib/utils/drive";
 import type { TradingItem } from "@/lib/types";
 
 // 公開欄位（排除 costPrice）
@@ -85,7 +87,7 @@ export async function getMachineById(id: string): Promise<TradingItem | null> {
     const rows = await getDb()
       .select(publicMachineColumns)
       .from(machines)
-      .where(eq(machines.id, id))
+      .where(and(eq(machines.id, id), ne(machines.isActive, false)))
       .limit(1);
     if (!rows.length) return null;
     return mapRow(rows[0]);
@@ -95,9 +97,36 @@ export async function getMachineById(id: string): Promise<TradingItem | null> {
   }
 }
 
+export async function getRelatedMachines(
+  excludeId: string,
+  category: string,
+  limit = 3,
+): Promise<TradingItem[]> {
+  try {
+    const rows = await getDb()
+      .select(publicMachineColumns)
+      .from(machines)
+      .where(
+        and(
+          eq(machines.category, category),
+          ne(machines.id, excludeId),
+          ne(machines.isActive, false),
+        ),
+      )
+      .orderBy(desc(machines.createdAt))
+      .limit(limit);
+    return rows.map(mapRow);
+  } catch (error) {
+    console.error("Error fetching related machines:", error);
+    return [];
+  }
+}
+
 export async function uploadUsedEquipment(payload: Record<string, unknown>) {
   const cookieStore = await cookies();
-  if (cookieStore.get("admin_session")?.value !== process.env.ADMIN_PASSWORD) {
+  const token = cookieStore.get("admin_session")?.value;
+  const secret = process.env.ADMIN_PASSWORD;
+  if (!token || !secret || !await verifySessionToken(token, secret)) {
     throw new Error("Unauthorized");
   }
 
@@ -208,17 +237,10 @@ async function notifySubscribers(machineName: string, machineId: string, categor
     headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
     body: JSON.stringify({
       from: "東鐵工程 <notify@tonteih.com>",
-      to: emails,
+      to: "notify@tonteih.com",
+      bcc: emails,
       subject: `【新機到貨】${machineName}`,
       html,
     }),
   }).catch((e) => console.warn("Subscriber notification failed:", e));
-}
-
-function convertDriveUrl(url: string): string {
-  const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-  if (match) {
-    return `https://lh3.googleusercontent.com/d/${match[1]}`;
-  }
-  return url;
 }

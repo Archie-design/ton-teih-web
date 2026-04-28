@@ -1,33 +1,7 @@
-export interface Machine {
-  id: string;
-  name: string;
-  brand: string;
-  model: string;
-  year: number;
-  price: number;
-  currency: string;
-  location: string;
-  category: string;
-  description: string;
-  hoursUsed?: number;
-  controller?: string;
-  pumpSystem?: string;
-  thumbnail: string;
-  gallery: string[];
-  isRecommended?: boolean;
-  isVerified?: boolean;
-  isOfficial?: boolean;
-  specs: { [key: string]: string };
-}
+import type { machines } from "@/lib/db/schema";
 
-export interface TradingItem extends Machine {
-  tradingStatus:
-  | "available"
-  | "reserved"
-  | "sold"
-  | "預約看機"
-  | "上架中"
-  | string;
-  inspectionScore: number;
-}
+// 完整 DB row（含 costPrice、isActive、createdAt — 僅後台使用）
+export type AdminMachine = typeof machines.$inferSelect;
 
+// 前台公開視角：排除敏感／管理欄位，且 thumbnail 經 mapRow 處理過保證有值
+export type TradingItem = Omit<AdminMachine, "costPrice" | "isActive" | "createdAt">;

@@ -2,6 +2,14 @@ import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db/neon";
 import { inquiries, sellerRequests } from "@/lib/db/schema";
 
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 // ─── Email 通知（Resend REST API，選填）────────────────────────────────────────
 async function sendNotification(subject: string, html: string) {
   const apiKey = process.env.RESEND_API_KEY;
@@ -23,6 +31,31 @@ async function sendNotification(subject: string, html: string) {
 // ─── 基本欄位驗證 ─────────────────────────────────────────────────────────────
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+const MAX_LENGTHS: Record<string, number> = {
+  name: 100,
+  phone: 30,
+  email: 254,
+  message: 2000,
+  machineBrand: 100,
+  machineModel: 100,
+  machineYear: 10,
+  machineHours: 20,
+  machinePrice: 50,
+  machineLocation: 200,
+  machineCondition: 500,
+  product: 200,
+};
+
+function checkLengths(data: Record<string, unknown>): string | null {
+  for (const [field, max] of Object.entries(MAX_LENGTHS)) {
+    const val = data[field];
+    if (typeof val === "string" && val.length > max) {
+      return `欄位「${field}」超過最大長度 ${max} 字元。`;
+    }
+  }
+  return null;
 }
 
 export async function POST(request: Request) {
@@ -48,6 +81,12 @@ export async function POST(request: Request) {
       );
     }
 
+    // 長度驗證
+    const lengthError = checkLengths(data);
+    if (lengthError) {
+      return NextResponse.json({ success: false, message: lengthError }, { status: 400 });
+    }
+
     if (data.type === "seller_request") {
       await getDb().insert(sellerRequests).values({
         name: data.name || "",
@@ -65,8 +104,8 @@ export async function POST(request: Request) {
       });
 
       await sendNotification(
-        `【新託售申請】${data.name} — ${data.machineBrand} ${data.machineModel}`,
-        `<p>姓名：${data.name}<br>電話：${data.phone}<br>品牌：${data.machineBrand} ${data.machineModel}<br>年份：${data.machineYear}<br>參考售價：${data.machinePrice}</p><p><a href="https://www.tonteih.com/admin/seller-requests">前往後台查看</a></p>`,
+        `【新託售申請】${escapeHtml(data.name)} — ${escapeHtml(data.machineBrand)} ${escapeHtml(data.machineModel)}`,
+        `<p>姓名：${escapeHtml(data.name)}<br>電話：${escapeHtml(data.phone)}<br>品牌：${escapeHtml(data.machineBrand)} ${escapeHtml(data.machineModel)}<br>年份：${escapeHtml(data.machineYear)}<br>參考售價：${escapeHtml(data.machinePrice)}</p><p><a href="https://www.tonteih.com/admin/seller-requests">前往後台查看</a></p>`,
       );
       return NextResponse.json({ success: true, message: "託售申請已收到" });
     }
@@ -84,8 +123,8 @@ export async function POST(request: Request) {
     });
 
     await sendNotification(
-      `【新詢價】${data.name} — ${data.product || data.equipmentId || "一般詢問"}`,
-      `<p>姓名：${data.name}<br>電話：${data.phone}<br>詢問：${data.product || "—"}<br>機台ID：${data.equipmentId || "—"}<br>留言：${data.message || "—"}</p><p><a href="https://www.tonteih.com/admin/inquiries">前往後台查看</a></p>`,
+      `【新詢價】${escapeHtml(data.name)} — ${escapeHtml(data.product || data.equipmentId || "一般詢問")}`,
+      `<p>姓名：${escapeHtml(data.name)}<br>電話：${escapeHtml(data.phone)}<br>詢問：${escapeHtml(data.product || "—")}<br>機台ID：${escapeHtml(data.equipmentId || "—")}<br>留言：${escapeHtml(data.message || "—")}</p><p><a href="https://www.tonteih.com/admin/inquiries">前往後台查看</a></p>`,
     );
     return NextResponse.json({ success: true, message: "詢價已收到" });
   } catch (error) {

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { createSessionToken } from "@/lib/auth";
 
 export async function POST(request: Request) {
   try {
@@ -19,8 +20,9 @@ export async function POST(request: Request) {
       );
     }
 
+    const token = await createSessionToken(adminPassword);
     const response = NextResponse.json({ success: true });
-    response.cookies.set("admin_session", adminPassword, {
+    response.cookies.set("admin_session", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
