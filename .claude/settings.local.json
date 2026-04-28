@@ -3,7 +3,12 @@
     "allow": [
       "Bash(node --env-file=.env.local scripts/migrate-firestore-to-neon.mjs)",
       "Bash(npm run *)",
-      "Bash(npx drizzle-kit *)"
+      "Bash(npx drizzle-kit *)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('version:',d.get\\('version'\\),'dialect:',d.get\\('dialect'\\)\\); [print\\(f'  {t}: {len\\(v.get\\(\\\\\"indexes\\\\\",{}\\)\\)} indexes, {len\\(v.get\\(\\\\\"uniqueConstraints\\\\\",{}\\)\\)} unique constraints'\\) for t,v in d.get\\('tables',{}\\).items\\(\\)]\")",
+      "Read(//tmp/**)",
+      "Read(//tmp/drizzle-introspect-check/**)",
+      "Bash(node -e ' *)",
+      "Bash(node --env-file=.env.local -e ' *)"
     ]
   }
 }
