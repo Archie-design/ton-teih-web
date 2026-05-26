@@ -3,10 +3,12 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const pathname = usePathname();
 
     // 滑動回頂端處理函式
     const handleLogoClick = () => {
@@ -61,11 +63,11 @@ export default function Navbar() {
                         </Link>
                         <Link
                             href="/used-equipment"
-                            className="hover:text-red-600 transition"
+                            className={`hover:text-red-600 transition${pathname.startsWith("/used-equipment") ? " text-red-600" : ""}`}
                         >
                             認證二手機交易
                         </Link>
-                        <Link href="/faq" className="hover:text-red-600 transition">
+                        <Link href="/faq" className={`hover:text-red-600 transition${pathname === "/faq" ? " text-red-600" : ""}`}>
                             常見問題
                         </Link>
                         <Link href="/#contact" className="hover:text-red-600 transition">
@@ -80,8 +82,11 @@ export default function Navbar() {
                     </div>
 
                     <button
-                        className="md:hidden p-2"
+                        className="md:hidden p-2 cursor-pointer"
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        aria-label={isMenuOpen ? "關閉選單" : "開啟選單"}
+                        aria-expanded={isMenuOpen}
+                        aria-controls="mobile-menu"
                     >
                         {isMenuOpen ? <X /> : <Menu />}
                     </button>
@@ -89,7 +94,7 @@ export default function Navbar() {
             </div>
 
             {isMenuOpen && (
-                <div className="md:hidden bg-white border-t p-4 shadow-xl">
+                <div id="mobile-menu" className="md:hidden bg-white border-t p-4 shadow-xl">
                     <div className="flex flex-col space-y-4 p-4">
                         <Link
                             href="/#injection"
@@ -115,14 +120,14 @@ export default function Navbar() {
                         <Link
                             href="/used-equipment"
                             onClick={() => setIsMenuOpen(false)}
-                            className="font-bold text-red-600"
+                            className={`font-bold ${pathname.startsWith("/used-equipment") ? "text-red-600" : "text-slate-700"}`}
                         >
                             認證二手機交易
                         </Link>
                         <Link
                             href="/faq"
                             onClick={() => setIsMenuOpen(false)}
-                            className="font-bold text-slate-700"
+                            className={`font-bold ${pathname === "/faq" ? "text-red-600" : "text-slate-700"}`}
                         >
                             常見問題
                         </Link>
@@ -136,7 +141,7 @@ export default function Navbar() {
                         <Link
                             href="/used-equipment"
                             onClick={() => setIsMenuOpen(false)}
-                            className="font-bold text-red-600"
+                            className="inline-flex items-center justify-center bg-red-600 text-white font-black px-5 py-2.5 rounded hover:bg-red-700 transition"
                         >
                             委託代理
                         </Link>

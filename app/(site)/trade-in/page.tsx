@@ -1,4 +1,6 @@
+import { Fragment } from "react";
 import { Metadata } from "next";
+import { ArrowRight } from "lucide-react";
 import TradeInClient from "./TradeInClient";
 
 export const metadata: Metadata = {
@@ -39,7 +41,7 @@ export default function TradeInPage() {
 
       {/* 服務說明 */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr_auto_1fr] gap-8 md:gap-4 md:items-stretch mb-20">
           {[
             {
               step: "01",
@@ -56,12 +58,19 @@ export default function TradeInPage() {
               title: "代理媒合",
               desc: "透過去識別化方式在平台上架，保護廠房隱私，由東鐵統一窗口洽談。",
             },
-          ].map(({ step, title, desc }) => (
-            <div key={step} className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-              <p className="text-5xl font-black text-red-600/20 mb-4">{step}</p>
-              <h3 className="text-lg font-black text-slate-900 mb-2">{title}</h3>
-              <p className="text-sm text-slate-500 leading-relaxed">{desc}</p>
-            </div>
+          ].map(({ step, title, desc }, index) => (
+            <Fragment key={step}>
+              {index > 0 && (
+                <div className="hidden md:flex items-center justify-center text-slate-300 self-center">
+                  <ArrowRight size={24} />
+                </div>
+              )}
+              <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
+                <p className="text-5xl font-black text-red-600/40 mb-4">{step}</p>
+                <h3 className="text-lg font-black text-slate-900 mb-2">{title}</h3>
+                <p className="text-sm text-slate-500 leading-relaxed">{desc}</p>
+              </div>
+            </Fragment>
           ))}
         </div>
 

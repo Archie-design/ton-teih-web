@@ -51,13 +51,17 @@ export default async function MachineDetailPage({ params }: Props) {
       {/* Hero */}
       <section className="bg-[#111] py-12 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2 text-xs font-bold text-slate-400 mb-4">
-            <a href="/used-equipment" className="hover:text-white transition-colors">
-              認證中古設備
-            </a>
-            <span>/</span>
-            <span className="text-white">{machine.category}</span>
-          </div>
+          <nav aria-label="breadcrumb">
+            <ol className="flex items-center gap-2 text-xs font-bold text-slate-400 mb-4">
+              <li>
+                <a href="/used-equipment" className="hover:text-white transition-colors">
+                  認證中古設備
+                </a>
+              </li>
+              <li aria-hidden="true">/</li>
+              <li aria-current="page" className="text-white">{machine.category}</li>
+            </ol>
+          </nav>
           <span className="inline-block px-3 py-1 bg-red-600 text-white rounded-sm text-[10px] font-black tracking-widest uppercase mb-4 shadow-md">
             {machine.isOfficial ? "Ton Teih Certified" : "Used Equipment"}
           </span>

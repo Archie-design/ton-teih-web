@@ -8,7 +8,16 @@
       "Read(//tmp/**)",
       "Read(//tmp/drizzle-introspect-check/**)",
       "Bash(node -e ' *)",
-      "Bash(node --env-file=.env.local -e ' *)"
+      "Bash(node --env-file=.env.local -e ' *)",
+      "Bash(python3 src/ui-ux-pro-max/scripts/search.py \"B2B industrial equipment catalog Taiwan manufacturing\" --design-system -p \"Ton Teih Engineering\" -f markdown)",
+      "Bash(python3 src/ui-ux-pro-max/scripts/search.py \"B2B catalog industrial equipment Taiwan\" --domain ux -n 5)",
+      "Bash(python3 src/ui-ux-pro-max/scripts/search.py \"trust authority B2B\" --domain style -n 3)",
+      "Bash(python3 src/ui-ux-pro-max/scripts/search.py \"manufacturing catalog product listing\" --domain landing -n 3)",
+      "Bash(python3 src/ui-ux-pro-max/scripts/search.py \"responsive mobile first\" --domain ux -n 3)",
+      "Bash(python3 src/ui-ux-pro-max/scripts/search.py \"form validation input accessibility\" --domain ux -n 3)",
+      "Bash(python3 src/ui-ux-pro-max/scripts/search.py \"loading skeleton placeholder\" --domain ux -n 3)",
+      "Bash(python3 src/ui-ux-pro-max/scripts/search.py \"navigation active state keyboard focus\" --domain ux -n 3)",
+      "Bash(python3 src/ui-ux-pro-max/scripts/search.py \"contrast ratio accessibility WCAG\" --domain ux -n 3)"
     ]
   }
 }

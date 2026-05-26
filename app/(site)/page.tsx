@@ -15,6 +15,7 @@ import {
   Trash2,
   ArrowUpCircle,
   ChevronDown,
+  X,
 } from "lucide-react";
 
 import Image from "next/image";
@@ -50,9 +51,9 @@ export default function App() {
             <button
               className="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors cursor-pointer"
               onClick={() => setLightbox(null)}
-              aria-label="關閉"
+              aria-label="關閉圖片"
             >
-              ✕
+              <X size={16} />
             </button>
           </div>
         </div>

@@ -246,7 +246,7 @@ export default function UsedEquipmentClientView({ initialMachines }: Props) {
                                         {(machine.tradingStatus === "sold" || machine.tradingStatus === "已售出") ? (
                                             <a
                                                 href={`/used-equipment/${machine.id}`}
-                                                className="w-full flex justify-center py-3.5 px-4 rounded-xl font-black text-xs uppercase tracking-widest bg-slate-300 text-slate-500 transition-all cursor-pointer"
+                                                className="w-full flex justify-center py-3.5 px-4 rounded-xl font-black text-xs uppercase tracking-widest bg-slate-200 text-slate-600 transition-all cursor-pointer hover:bg-slate-300"
                                             >
                                                 查看詳情
                                             </a>
